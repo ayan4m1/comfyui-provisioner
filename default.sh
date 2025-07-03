@@ -7,7 +7,9 @@ COMFYUI_DIR=${WORKSPACE}/ComfyUI
 
 APT_PACKAGES=()
 
-PIP_PACKAGES=()
+PIP_PACKAGES=(
+    "xformers"
+)
 
 NODES=(
     "https://github.com/city96/ComfyUI-GGUF"
