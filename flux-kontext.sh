@@ -12,9 +12,7 @@ PIP_PACKAGES=(
 )
 
 NODES=(
-    "https://github.com/liusida/ComfyUI-Login"
     "https://github.com/ltdrdata/ComfyUI-Manager"
-    "https://github.com/Fannovel16/comfyui_controlnet_aux"
 )
 
 WORKFLOWS=(
