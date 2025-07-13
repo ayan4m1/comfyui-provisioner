@@ -7,8 +7,7 @@ export type Offer = {
   end_date: number;
   direct_port_count: number;
   disk_bw: number;
-  dph_total: number;
-  duration: number;
+  dlperf_per_dphtotal: number;
   geolocation: string;
   gpu_name: string;
   gpu_ram: number;
@@ -35,4 +34,6 @@ export type Template = {
 export type ProvisionOptions = {
   template?: string;
   minVram?: number;
+  maxPorts?: number;
+  maxHourlyCost?: number;
 };

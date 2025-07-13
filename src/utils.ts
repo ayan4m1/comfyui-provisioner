@@ -8,7 +8,7 @@ import { confirm, select } from '@inquirer/prompts';
 // eslint-disable-next-line import-x/no-unresolved
 import packageJsonModule from '@npmcli/package-json';
 import type { PackageJson } from '@npmcli/package-json';
-import { basename, dirname, join, resolve } from 'path';
+import { dirname, join, resolve } from 'path';
 // eslint-disable-next-line import-x/no-unresolved
 import { formatDistanceToNow, fromUnixTime } from 'date-fns';
 
@@ -25,29 +25,40 @@ const getPackageJsonPath = (): string => resolve(getInstallDirectory(), '..');
 export const getPackageInfo = async (): Promise<PackageJson> =>
   (await packageJsonModule.load(getPackageJsonPath()))?.content;
 
+const chooseTemplate = async (options: ProvisionOptions) => {
+  const baseTemplatePath = join(getPackageJsonPath(), 'templates');
+
+  let templatePath: string;
+
+  if (!options.template) {
+    const templatePaths = await readdir(baseTemplatePath);
+    const templateFiles = await Promise.all(
+      templatePaths.map((path) =>
+        readFile(join(baseTemplatePath, path), 'utf-8')
+      )
+    );
+    const chosenTemplate = await select<string>({
+      message: 'Please choose a template to deploy',
+      choices: templatePaths.map((template, index) => ({
+        name: (JSON.parse(templateFiles[index]) as unknown as Template).name,
+        value: template
+      }))
+    });
+
+    templatePath = join(baseTemplatePath, chosenTemplate);
+  } else {
+    templatePath = join(baseTemplatePath, `${options.template}.json`);
+  }
+
+  return templatePath;
+};
+
 export const provision = async (options: ProvisionOptions): Promise<void> => {
   // eslint-disable-next-line prefer-const
   let rentedInstance: Instance = null;
 
   try {
-    const baseTemplatePath = join(getPackageJsonPath(), 'templates');
-
-    let templatePath: string;
-
-    if (!options.template) {
-      const templatePaths = await readdir(baseTemplatePath);
-      const chosenTemplate = await select<string>({
-        message: 'Please choose a template to deploy',
-        choices: templatePaths.map((template) => ({
-          name: basename(template, '.json'),
-          value: template
-        }))
-      });
-
-      templatePath = join(baseTemplatePath, chosenTemplate);
-    } else {
-      templatePath = join(baseTemplatePath, `${options.template}.json`);
-    }
+    const templatePath = await chooseTemplate(options);
 
     if (!existsSync(templatePath)) {
       return console.error(`Unable to find template at ${templatePath}!`);
@@ -67,9 +78,9 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
           num_gpus: { eq: 1 },
           gpu_ram: { gte: options.minVram * 1024 },
           inet_down: { gte: 1000 },
-          min_bid: { lte: 1 },
-          limit: 10,
-          order: [['dph_total', 'asc']]
+          direct_port_count: { lte: options.maxPorts },
+          limit: 25,
+          order: [['dlperf_per_dphtotal', 'asc']]
         }
       }),
       headers: {
@@ -83,6 +94,7 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
       message: 'Choose the instance you would like to request.',
       choices: offers
         .filter((offer) => !rtx5000Regex.test(offer.gpu_name))
+        .filter((offer) => offer.search.totalHour <= options.maxHourlyCost)
         .map((offer) => ({
           name: sprintf(
             '%-12s %s %-16s %8s %s',

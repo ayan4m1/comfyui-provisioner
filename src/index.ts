@@ -17,6 +17,18 @@ try {
       (val) => parseInt(val, 10),
       16
     )
+    .option(
+      '--max-hourly-cost <cost>',
+      'Max instance cost in $/hr',
+      (val) => parseInt(val, 10),
+      500
+    )
+    .option(
+      '--max-ports <count>',
+      'Max number of ports per machine',
+      (val) => parseInt(val, 10),
+      500
+    )
     .action((template, opts) =>
       provision({
         template,
