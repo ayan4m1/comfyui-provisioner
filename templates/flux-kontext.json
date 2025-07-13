@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/templates/template.schema.json",
   "name": "Flux Kontext",
   "size": 4e10,
   "hash": "b3a852d995cac99809607b2f52a2fe36",

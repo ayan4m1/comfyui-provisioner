@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bulletlogic.com/template.schema.json",
+  "title": "Template",
+  "description": "A template used to deploy a service to Vast.ai",
+  "type": "object",
+  "properties": {
+    "name": {
+      "description": "The short name for the template",
+      "type": "string",
+      "exclusiveMinimum": 0
+    },
+    "description": {
+      "description": "The long-form description for the template",
+      "type": "string"
+    },
+    "hash": {
+      "description": "The template hash from Vast.ai",
+      "type": "string",
+      "exclusiveMinimum": 0
+    },
+    "size": {
+      "description": "The recommended disk allocation for the template",
+      "type": "integer",
+      "exclusiveMinimum": 0
+    }
+  },
+  "required": ["name", "hash", "size"]
+}
