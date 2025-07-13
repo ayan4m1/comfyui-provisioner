@@ -1,31 +1,21 @@
+import { existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { filesize } from 'filesize';
-import { dirname, resolve } from 'path';
-import { select } from '@inquirer/prompts';
-import type { PackageJson } from '@npmcli/package-json';
+import { sprintf } from 'sprintf-js';
+import { readdir, readFile } from 'fs/promises';
+import { ExitPromptError } from '@inquirer/core';
+import { confirm, select } from '@inquirer/prompts';
+// eslint-disable-next-line import-x/no-unresolved
 import packageJsonModule from '@npmcli/package-json';
+import type { PackageJson } from '@npmcli/package-json';
+import { basename, dirname, join, resolve } from 'path';
+// eslint-disable-next-line import-x/no-unresolved
+import { formatDistanceToNow, fromUnixTime } from 'date-fns';
 
-export type Offer = {
-  id: number;
-  direct_port_count: number;
-  disk_bw: number;
-  dph_total: number;
-  duration: number;
-  geolocation: string;
-  gpu_name: string;
-  gpu_ram: number;
-  inet_down: number;
-  min_bid: number;
-  storage_cost: number;
-};
+import { Instance, Offers, ProvisionOptions, Template } from './types.js';
 
-export type Offers = {
-  offers: Offer[];
-};
-
-export type ProvisionOptions = {
-  script: string;
-};
+const baseApiUrl = 'https://console.vast.ai/api/v0';
+const rtx5000Regex = /rtx\s*5[0-9]{3}/i;
 
 const getInstallDirectory = (): string =>
   dirname(fileURLToPath(import.meta.url));
@@ -36,57 +26,118 @@ export const getPackageInfo = async (): Promise<PackageJson> =>
   (await packageJsonModule.load(getPackageJsonPath()))?.content;
 
 export const provision = async (options: ProvisionOptions): Promise<void> => {
+  // eslint-disable-next-line prefer-const
+  let rentedInstance: Instance = null;
+
   try {
-    const response = await fetch(
-      'https://console.vast.ai/api/v0/search/asks/',
-      {
-        method: 'PUT',
-        body: JSON.stringify({
-          q: {
-            type: 'on-demand',
-            verified: { eq: true },
-            rentable: { eq: true },
-            rented: { eq: false },
-            num_gpus: { eq: 1 },
-            gpu_ram: { gte: 16384 },
-            inet_down: { gte: 1000 },
-            min_bid: { lte: 1 },
-            limit: 10,
-            order: [['dph_total', 'asc']]
-          }
-        }),
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        redirect: 'follow'
-      }
-    );
-    const instances = JSON.parse(await response.text()) as unknown as Offers;
+    const baseTemplatePath = join(getPackageJsonPath(), 'templates');
 
-    console.table(
-      instances.offers.map((offer) => ({
-        id: offer.id,
-        location: offer.geolocation,
-        gpu: offer.gpu_name,
-        vram: filesize(offer.gpu_ram * 1e6, { exponent: 3 }),
-        net: `${Math.floor(offer.inet_down)} Mbps`,
-        cost: `$${(offer.min_bid * 24).toFixed(2)}/day`
-      }))
-    );
+    let templatePath: string;
 
-    const choice = await select<string>({
+    if (!options.template) {
+      const templatePaths = await readdir(baseTemplatePath);
+      const chosenTemplate = await select<string>({
+        message: 'Please choose a template to deploy',
+        choices: templatePaths.map((template) => ({
+          name: basename(template, '.json'),
+          value: template
+        }))
+      });
+
+      templatePath = join(baseTemplatePath, chosenTemplate);
+    } else {
+      templatePath = join(baseTemplatePath, `${options.template}.json`);
+    }
+
+    if (!existsSync(templatePath)) {
+      return console.error(`Unable to find template at ${templatePath}!`);
+    }
+
+    const templateInfo = JSON.parse(
+      await readFile(templatePath, 'utf-8')
+    ) as unknown as Template;
+    const response = await fetch(`${baseApiUrl}/search/asks/`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        q: {
+          type: 'on-demand',
+          verified: { eq: true },
+          rentable: { eq: true },
+          rented: { eq: false },
+          num_gpus: { eq: 1 },
+          gpu_ram: { gte: options.minVram * 1024 },
+          inet_down: { gte: 1000 },
+          min_bid: { lte: 1 },
+          limit: 10,
+          order: [['dph_total', 'asc']]
+        }
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow'
+    });
+    const { offers } = JSON.parse(await response.text()) as unknown as Offers;
+    const choice = await select<number>({
       message: 'Choose the instance you would like to request.',
-      choices: instances.offers.map((offer) => ({
-        name: offer.id.toString(),
-        value: offer.id.toString()
-      }))
+      choices: offers
+        .filter((offer) => !rtx5000Regex.test(offer.gpu_name))
+        .map((offer) => ({
+          name: sprintf(
+            '%-12s %s %-16s %8s %s',
+            offer.gpu_name,
+            filesize(offer.gpu_ram * 1e6, { exponent: 3 }),
+            offer.geolocation,
+            `${Math.floor(offer.inet_down)} Mbps`,
+            `$${offer.search.totalHour.toFixed(3)}/hr`
+          ),
+          value: offer.id
+        })),
+      loop: false
+    });
+    const chosen = offers.find((offer) => offer.id === choice);
+    const hourlyDiskCost = chosen.search.diskHour * (templateInfo.size / 1e10);
+    const hourlyCost = `$${(chosen.search.gpuCostPerHour + hourlyDiskCost).toFixed(3)}/hr`;
+    const storageCost = `$${hourlyDiskCost.toFixed(3)}/hr`;
+    const confirmed = await confirm({
+      message: `Are you SURE you want create the instance?\n\nIt will be automatically destroyed in ${formatDistanceToNow(fromUnixTime(chosen.end_date))}.\n\nYou will be charged ${hourlyCost} while it is running and ${storageCost} while it is stopped!\n\nIt is YOUR responsibility to make sure that it has been stopped or destroyed correctly.\n`,
+      default: false
     });
 
+    if (!confirmed) {
+      return console.log('Exiting because user declined to deploy.');
+    }
+
     console.dir(
-      `Deploying template ${options.script} to instance ${choice}...`
+      `Deploying template ${options.template} with hash ${templateInfo.hash} to instance ${choice}...`
     );
-  } catch (error) {
-    console.error(error);
+
+    const deployResponse = await fetch(`${baseApiUrl}/asks/${chosen.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        template_hash_id: templateInfo.hash,
+        disk: templateInfo.size / 1e9,
+        target_state: 'running',
+        cancel_unavail: true,
+        vm: false
+      })
+    });
+    const result = JSON.parse(await deployResponse.text());
+
+    console.dir(result);
+  } catch (error: unknown) {
+    if (error instanceof ExitPromptError) {
+      console.log('User requested cancellation of the provisioning process...');
+    } else {
+      console.error(error);
+    }
+  } finally {
+    if (rentedInstance) {
+      // todo: destroy rented instance
+    }
   }
 };

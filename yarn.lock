@@ -23,6 +23,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@commander-js/extra-typings@npm:^14.0.0":
+  version: 14.0.0
+  resolution: "@commander-js/extra-typings@npm:14.0.0"
+  peerDependencies:
+    commander: ~14.0.0
+  checksum: 10c0/b064889e254e1c895886ec8148ac6e0d9bfa3c0336b9ee58124178308819dcf008f15e2a7abdc89b6c1ac3bdbd8003d8cfdaf363971d41dcce64b28c9714af12
+  languageName: node
+  linkType: hard
+
 "@commitlint/cli@npm:^19.8.1":
   version: 19.8.1
   resolution: "@commitlint/cli@npm:19.8.1"
@@ -1072,6 +1081,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/sprintf-js@npm:^1":
+  version: 1.1.4
+  resolution: "@types/sprintf-js@npm:1.1.4"
+  checksum: 10c0/b56aa88876b8c2b00df7f931615f33371231c265328875024071e3dca151021bbce6143833fc2172640a75680dec260a80cca451374976f6fd29d305b108cfe1
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/eslint-plugin@npm:8.36.0":
   version: 8.36.0
   resolution: "@typescript-eslint/eslint-plugin@npm:8.36.0"
@@ -1754,9 +1770,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "comfyui-provisioner@workspace:."
   dependencies:
+    "@commander-js/extra-typings": "npm:^14.0.0"
     "@commitlint/config-conventional": "npm:^19.8.1"
     "@commitlint/cz-commitlint": "npm:^19.8.1"
     "@eslint/js": "npm:^9.30.1"
+    "@inquirer/core": "npm:^10.1.14"
     "@inquirer/prompts": "npm:^7.6.0"
     "@npmcli/package-json": "npm:^6.2.0"
     "@rollup/plugin-terser": "npm:^0.4.4"
@@ -1764,10 +1782,12 @@ __metadata:
     "@types/eslint__js": "npm:^8.42.3"
     "@types/node": "npm:24.0.10"
     "@types/npmcli__package-json": "npm:^4.0.4"
+    "@types/sprintf-js": "npm:^1"
     chalk: "npm:^5.4.1"
     commander: "npm:^14.0.0"
     commitizen: "npm:^4.3.1"
     commitlint: "npm:^19.8.1"
+    date-fns: "npm:^4.1.0"
     eslint: "npm:^9.30.1"
     eslint-config-prettier: "npm:^10.1.5"
     eslint-import-resolver-typescript: "npm:^4.4.4"
@@ -1780,6 +1800,7 @@ __metadata:
     prettier: "npm:^3.6.2"
     rollup: "npm:^4.44.2"
     rollup-plugin-auto-external: "npm:^2.0.0"
+    sprintf-js: "npm:^1.1.3"
     tslib: "npm:^2.8.1"
     typescript: "npm:^5.8.3"
     typescript-eslint: "npm:^8.35.1"
@@ -1964,6 +1985,13 @@ __metadata:
   version: 8.1.0
   resolution: "dargs@npm:8.1.0"
   checksum: 10c0/08cbd1ee4ac1a16fb7700e761af2e3e22d1bdc04ac4f851926f552dde8f9e57714c0d04013c2cca1cda0cba8fb637e0f93ad15d5285547a939dd1989ee06a82d
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "date-fns@npm:4.1.0"
+  checksum: 10c0/b79ff32830e6b7faa009590af6ae0fb8c3fd9ffad46d930548fbb5acf473773b4712ae887e156ba91a7b3dc30591ce0f517d69fd83bd9c38650fdc03b4e0bac8
   languageName: node
   linkType: hard
 
