@@ -1,12 +1,17 @@
 {
   "author": "ayan4m1 <andrew@bulletlogic.com>",
+  "bugs": {
+    "url": "https://github.com/ayan4m1/comfyui-provisioner/issues"
+  },
   "config": {
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
     }
   },
-  "bugs": {
-    "url": "https://github.com/ayan4m1/comfyui-provisioner/issues"
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "commander": "^14.0.0",
+    "inquirer": "^12.7.0"
   },
   "description": "Deploy a ComfyUI instance to Vast.ai with one click",
   "devDependencies": {
@@ -25,7 +30,6 @@
     "eslint-plugin-import-x": "^4.16.1",
     "eslint-plugin-prettier": "^5.5.1",
     "husky": "^9.1.7",
-    "inquirer": "9",
     "lint-staged": "^16.1.2",
     "prettier": "^3.6.2",
     "rollup": "^4.44.2",
@@ -45,6 +49,7 @@
   "main": "lib/index.cjs",
   "module": "lib/index.js",
   "name": "comfyui-provisioner",
+  "packageManager": "yarn@4.9.2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ayan4m1/comfyui-provisioner.git"
@@ -58,6 +63,5 @@
   },
   "type": "module",
   "types": "lib/index.d.ts",
-  "version": "0.1.0",
-  "packageManager": "yarn@4.9.2"
+  "version": "0.1.0"
 }
