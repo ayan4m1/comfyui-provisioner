@@ -12,7 +12,13 @@ import { dirname, join, resolve } from 'path';
 // eslint-disable-next-line import-x/no-unresolved
 import { formatDistanceToNow, fromUnixTime } from 'date-fns';
 
-import { Instance, Offers, ProvisionOptions, Template } from './types.js';
+import {
+  Instance,
+  Offer,
+  Offers,
+  ProvisionOptions,
+  Template
+} from './types.js';
 
 const baseApiUrl = 'https://console.vast.ai/api/v0';
 const rtx5000Regex = /rtx\s*5[0-9]{3}/i;
@@ -39,10 +45,18 @@ const chooseTemplate = async (options: ProvisionOptions) => {
     );
     const chosenTemplate = await select<string>({
       message: 'Please choose a template to deploy',
-      choices: templatePaths.map((template, index) => ({
-        name: (JSON.parse(templateFiles[index]) as unknown as Template).name,
-        value: template
-      }))
+      choices: templatePaths.map((path, index) => {
+        const contents = JSON.parse(
+          templateFiles[index]
+        ) as unknown as Template;
+
+        return {
+          name: contents.description
+            ? `${contents.name} - ${contents.description}`
+            : contents.name,
+          value: path
+        };
+      })
     });
 
     templatePath = join(baseTemplatePath, chosenTemplate);
@@ -51,6 +65,46 @@ const chooseTemplate = async (options: ProvisionOptions) => {
   }
 
   return templatePath;
+};
+
+const getOffers = async (options: ProvisionOptions) => {
+  const result: Offer[] = [];
+
+  try {
+    const response = await fetch(`${baseApiUrl}/search/asks/`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        q: {
+          type: 'on-demand',
+          verified: { eq: true },
+          rentable: { eq: true },
+          rented: { eq: false },
+          num_gpus: { eq: 1 },
+          gpu_ram: { gte: options.minVram * 1024 },
+          inet_down: { gte: 1000 },
+          direct_port_count: { lte: options.maxPorts },
+          limit: 25,
+          order: [
+            ['dph_total', 'asc'],
+            ['inet_down', 'desc']
+          ]
+        }
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow'
+    });
+    const { offers } = JSON.parse(await response.text()) as unknown as Offers;
+
+    result.push(...offers);
+  } catch (error) {
+    console.error('Error occurred during Vast.ai instance search!');
+    console.error(error);
+  }
+
+  return result;
 };
 
 export const provision = async (options: ProvisionOptions): Promise<void> => {
@@ -67,29 +121,8 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
     const templateInfo = JSON.parse(
       await readFile(templatePath, 'utf-8')
     ) as unknown as Template;
-    const response = await fetch(`${baseApiUrl}/search/asks/`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        q: {
-          type: 'on-demand',
-          verified: { eq: true },
-          rentable: { eq: true },
-          rented: { eq: false },
-          num_gpus: { eq: 1 },
-          gpu_ram: { gte: options.minVram * 1024 },
-          inet_down: { gte: 1000 },
-          direct_port_count: { lte: options.maxPorts },
-          limit: 25,
-          order: [['dlperf_per_dphtotal', 'asc']]
-        }
-      }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      redirect: 'follow'
-    });
-    const { offers } = JSON.parse(await response.text()) as unknown as Offers;
+
+    const offers = await getOffers(options);
     const choice = await select<number>({
       message: 'Choose the instance you would like to request.',
       choices: offers
@@ -97,10 +130,14 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
         .filter((offer) => offer.search.totalHour <= options.maxHourlyCost)
         .map((offer) => ({
           name: sprintf(
-            '%-12s %s %-16s %8s %s',
-            offer.gpu_name,
-            filesize(offer.gpu_ram * 1e6, { exponent: 3 }),
+            '%-16s %-12s %s %8s %s',
             offer.geolocation,
+            offer.gpu_name,
+            filesize(offer.gpu_ram * 1e6, {
+              exponent: 3,
+              round: 0,
+              roundingMethod: 'floor'
+            }),
             `${Math.floor(offer.inet_down)} Mbps`,
             `$${offer.search.totalHour.toFixed(3)}/hr`
           ),
