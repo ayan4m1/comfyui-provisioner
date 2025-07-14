@@ -182,7 +182,11 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
       await deployResponse.text()
     ) as unknown as CreateInstanceResponse;
 
-    console.dir(result);
+    if (result.success) {
+      console.log(`Instance ${result.new_contract} created!`);
+    } else {
+      console.log('Failed to create instance!');
+    }
   } catch (error: unknown) {
     if (error instanceof ExitPromptError) {
       console.log('User requested cancellation of the provisioning process...');
