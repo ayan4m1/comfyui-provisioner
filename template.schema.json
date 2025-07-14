@@ -23,6 +23,10 @@
       "description": "The recommended disk allocation for the template",
       "type": "integer",
       "exclusiveMinimum": 0
+    },
+    "environment": {
+      "description": "Key-value pairs to use for instance environment variables",
+      "type": "object"
     }
   },
   "required": ["name", "hash", "size"]

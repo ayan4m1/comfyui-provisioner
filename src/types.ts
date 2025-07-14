@@ -3,16 +3,15 @@ export type Instance = {
 };
 
 export type Offer = {
-  id: number;
-  end_date: number;
   direct_port_count: number;
   disk_bw: number;
   dlperf_per_dphtotal: number;
+  end_date: number;
   geolocation: string;
   gpu_name: string;
   gpu_ram: number;
+  id: number;
   inet_down: number;
-  min_bid: number;
   search: {
     gpuCostPerHour: number;
     diskHour: number;
@@ -25,15 +24,21 @@ export type Offers = {
 };
 
 export type Template = {
-  name: string;
   description?: string;
-  size: number;
+  environment?: Record<string, string>;
   hash: string;
+  name: string;
+  size: number;
+};
+
+export type CreateInstanceResponse = {
+  new_contract?: number;
+  success: boolean;
 };
 
 export type ProvisionOptions = {
-  template?: string;
-  minVram?: number;
-  maxPorts?: number;
   maxHourlyCost?: number;
+  maxPorts?: number;
+  minVram?: number;
+  template?: string;
 };

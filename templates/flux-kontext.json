@@ -1,7 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/template.schema.json",
+  "description": "An install with only Flux Kontext",
+  "hash": "b3a852d995cac99809607b2f52a2fe36",
   "name": "ComfyUI - Flux Kontext",
   "size": 4e10,
-  "hash": "b3a852d995cac99809607b2f52a2fe36",
-  "description": "An install with only Flux Kontext"
+  "environment": {
+    "PROVISIONING_SCRIPT": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/scripts/complete.sh"
+  }
 }

@@ -13,6 +13,7 @@ import { dirname, join, resolve } from 'path';
 import { formatDistanceToNow, fromUnixTime } from 'date-fns';
 
 import {
+  CreateInstanceResponse,
   Instance,
   Offer,
   Offers,
@@ -146,7 +147,7 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
       loop: false
     });
     const chosen = offers.find((offer) => offer.id === choice);
-    const hourlyDiskCost = chosen.search.diskHour * (templateInfo.size / 1e10);
+    const hourlyDiskCost = chosen.search.diskHour * (templateInfo.size / 1e10); // in GB/hr
     const hourlyCost = `$${(chosen.search.gpuCostPerHour + hourlyDiskCost).toFixed(3)}/hr`;
     const storageCost = `$${hourlyDiskCost.toFixed(3)}/hr`;
     const confirmed = await confirm({
@@ -169,13 +170,16 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
       },
       body: JSON.stringify({
         template_hash_id: templateInfo.hash,
-        disk: templateInfo.size / 1e9,
+        extra_env: templateInfo.environment,
+        disk: templateInfo.size / 1e9, // in GB
         target_state: 'running',
         cancel_unavail: true,
         vm: false
       })
     });
-    const result = JSON.parse(await deployResponse.text());
+    const result = JSON.parse(
+      await deployResponse.text()
+    ) as unknown as CreateInstanceResponse;
 
     console.dir(result);
   } catch (error: unknown) {

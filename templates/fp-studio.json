@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/template.schema.json",
-  "name": "FP-Studio",
   "description": "FP-Studio, a FramePack video editor suite",
   "hash": "41ad5228e7ff08ce9c852208bf9cf5bc",
+  "name": "FP-Studio",
   "size": 10e10
 }
