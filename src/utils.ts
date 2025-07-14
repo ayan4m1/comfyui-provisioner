@@ -166,6 +166,7 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
     const deployResponse = await fetch(`${baseApiUrl}/asks/${chosen.id}`, {
       method: 'PUT',
       headers: {
+        Authorization: `Bearer ${process.env.VAST_API_KEY}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({

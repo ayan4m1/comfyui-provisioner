@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { program } from '@commander-js/extra-typings';
 
 // eslint-disable-next-line import-x/no-unresolved
