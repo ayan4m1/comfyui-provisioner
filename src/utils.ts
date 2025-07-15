@@ -87,7 +87,7 @@ const getOffers = async (options: ProvisionOptions) => {
           limit: 25,
           order: [
             ['dph_total', 'asc'],
-            ['inet_down', 'desc']
+            ['inet_down', 'asc']
           ]
         }
       }),
