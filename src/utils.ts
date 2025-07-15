@@ -187,7 +187,12 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
     console.log('\nPress Ctrl-C when you are ready to destroy the instance...');
     process.stdin.resume();
     process.on('SIGINT', async () => {
-      if (result.new_contract) {
+      if (!result.new_contract) {
+        console.error('No instance to destroy! Exiting...');
+        return process.exit(0);
+      }
+
+      try {
         await fetch(`${baseApiUrl}/instances/${result.new_contract}`, {
           headers: {
             Authorization: `Bearer ${process.env.VAST_API_KEY}`,
@@ -196,9 +201,12 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
           method: 'DELETE'
         });
 
-        console.log(`Instance destroyed! Exiting...`);
+        console.log(`Instance ${result.new_contract} destroyed! Exiting...`);
+        process.exit(0);
+      } catch (error) {
+        console.error(error);
+        process.exit(1);
       }
-      process.exit(0);
     });
   } catch (error: unknown) {
     if (error instanceof ExitPromptError) {
