@@ -1,8 +1,8 @@
 {
   "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/template.schema.json",
-  "description": "An install with Flux, SDXL + variants, Hunyuan, WAN, ControlNets, and LoRAs",
-  "hash": "550bfb99f8673f8232e867a35042f648",
-  "name": "ComfyUI - Complete Install",
+  "description": "An install with SDXL + variants, ControlNets, and LoRAs",
+  "hash": "b3a852d995cac99809607b2f52a2fe36",
+  "name": "ComfyUI - SDXL Install",
   "size": 10e10,
   "environment": {
     "PROVISIONING_SCRIPT": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/scripts/complete.sh"
