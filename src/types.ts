@@ -1,7 +1,3 @@
-export type Instance = {
-  id: number;
-};
-
 export type Offer = {
   direct_port_count: number;
   disk_bw: number;

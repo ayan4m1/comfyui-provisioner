@@ -14,7 +14,6 @@ import { formatDistanceToNow, fromUnixTime } from 'date-fns';
 
 import {
   CreateInstanceResponse,
-  Instance,
   Offer,
   Offers,
   ProvisionOptions,
@@ -109,9 +108,6 @@ const getOffers = async (options: ProvisionOptions) => {
 };
 
 export const provision = async (options: ProvisionOptions): Promise<void> => {
-  // eslint-disable-next-line prefer-const
-  let rentedInstance: Instance = null;
-
   try {
     const templatePath = await chooseTemplate(options);
 
@@ -159,8 +155,8 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
       return console.log('Exiting because user declined to deploy.');
     }
 
-    console.dir(
-      `Deploying template ${options.template} with hash ${templateInfo.hash} to instance ${choice}...`
+    console.log(
+      `Deploying ${templateInfo.name} (template ${templateInfo.hash}) to instance ${choice}...`
     );
 
     const deployResponse = await fetch(`${baseApiUrl}/asks/${chosen.id}`, {
@@ -187,15 +183,28 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
     } else {
       console.log('Failed to create instance!');
     }
+
+    console.log('\nPress Ctrl-C when you are ready to destroy the instance...');
+    process.stdin.resume();
+    process.on('SIGINT', async () => {
+      if (result.new_contract) {
+        await fetch(`${baseApiUrl}/instances/${result.new_contract}`, {
+          headers: {
+            Authorization: `Bearer ${process.env.VAST_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          method: 'DELETE'
+        });
+
+        console.log(`Instance destroyed! Exiting...`);
+      }
+      process.exit(0);
+    });
   } catch (error: unknown) {
     if (error instanceof ExitPromptError) {
       console.log('User requested cancellation of the provisioning process...');
     } else {
       console.error(error);
-    }
-  } finally {
-    if (rentedInstance) {
-      // todo: destroy rented instance
     }
   }
 };
