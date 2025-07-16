@@ -1,5 +1,5 @@
 {
-  "$id": "https://bulletlogic.com/template.schema.json",
+  "$id": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/template.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Template",
   "description": "A template used to deploy a service to Vast.ai",
@@ -11,7 +11,10 @@
     },
     "hash": {
       "description": "The template hash from Vast.ai",
-      "exclusiveMinimum": 0,
+      "type": "string"
+    },
+    "tag": {
+      "description": "Docker tag to use for deployment",
       "type": "string"
     },
     "name": {
@@ -87,5 +90,13 @@
       "type": "integer"
     }
   },
-  "required": ["name", "hash", "size"]
+  "required": ["name", "hash", "size"],
+  "oneOf": [
+    {
+      "required": ["hash"]
+    },
+    {
+      "required": ["tag"]
+    }
+  ]
 }
