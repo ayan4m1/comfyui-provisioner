@@ -2,19 +2,19 @@
   "$id": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/template.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Template",
-  "description": "A template used to deploy a service to Vast.ai",
   "type": "object",
+  "description": "A template used to deploy a service to Vast.ai",
   "properties": {
     "description": {
       "description": "The long-form description for the template",
       "type": "string"
     },
-    "hash": {
-      "description": "The template hash from Vast.ai",
-      "type": "string"
+    "environment": {
+      "description": "Environment variables to define during deployment",
+      "type": "object"
     },
-    "tag": {
-      "description": "Docker tag to use for deployment",
+    "hash": {
+      "description": "The Vast.ai template hash to use for deployment",
       "type": "string"
     },
     "name": {
@@ -88,6 +88,10 @@
       "description": "The recommended disk allocation for the template",
       "exclusiveMinimum": 0,
       "type": "integer"
+    },
+    "tag": {
+      "description": "A Docker image tag to use for deployment",
+      "type": "string"
     }
   },
   "required": ["name", "hash", "size"],

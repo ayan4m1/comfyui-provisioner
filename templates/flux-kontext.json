@@ -1,21 +1,16 @@
 {
   "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/template.schema.json",
   "description": "An install with only Flux Kontext",
-  "hash": "550bfb99f8673f8232e867a35042f648",
   "name": "ComfyUI - Flux Kontext",
-  "size": 4e10,
   "script": "comfyui.sh",
+  "size": 4e10,
+  "tag": "vastai/comfy:cuda-12.8-auto",
   "provision": {
-    "pip_packages": ["xformers"],
-    "nodes": ["https://github.com/ltdrdata/ComfyUI-Manager"],
-    "workflows": [
-      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/flux-kontext.json"
-    ],
     "clip_models": [
       "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors"
     ],
-    "vae_models": [
-      "https://huggingface.co/ffxvs/vae-flux/resolve/main/ae.safetensors"
+    "diffusion_models": [
+      "https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors"
     ],
     "esrgan_models": [
       "https://github.com/Phhofm/models/releases/download/4xNomos2_hq_dat2/4xNomos2_hq_dat2.pth",
@@ -23,11 +18,16 @@
       "https://github.com/Kim2091/Kim2091-Models/releases/download/2x-AnimeSharpV2_Set/2x-AnimeSharpV2_RPLKSR_Sharp.pth",
       "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth"
     ],
+    "nodes": ["https://github.com/ltdrdata/ComfyUI-Manager"],
+    "pip_packages": ["xformers"],
     "text_encoder_models": [
       "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn.safetensors"
     ],
-    "diffusion_models": [
-      "https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors"
+    "vae_models": [
+      "https://huggingface.co/ffxvs/vae-flux/resolve/main/ae.safetensors"
+    ],
+    "workflows": [
+      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/flux-kontext.json"
     ]
   }
 }
