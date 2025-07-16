@@ -69,5 +69,6 @@
       "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/img2img_cn.json",
       "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/upscaler.json"
     ]
-  }
+  },
+  "runType": "jupyter"
 }

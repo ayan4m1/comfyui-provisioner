@@ -29,5 +29,6 @@
     "workflows": [
       "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/flux-kontext.json"
     ]
-  }
+  },
+  "runType": "jupyter"
 }

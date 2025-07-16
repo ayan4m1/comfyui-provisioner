@@ -3,5 +3,6 @@
   "description": "A FramePack video editor suite",
   "name": "FP-Studio",
   "size": 10e10,
-  "tag": "colinurbs/fp-studio:cuda12.8-latest-main"
+  "tag": "colinurbs/fp-studio:cuda12.8-latest-main",
+  "runType": "args"
 }

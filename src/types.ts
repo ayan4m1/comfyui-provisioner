@@ -19,7 +19,7 @@ export type Offers = {
   offers: Offer[];
 };
 
-export enum ProvisionKeys {
+export enum ProvisionKey {
   AptPackages = 'apt_packages',
   PipPackages = 'pip_packages',
   Nodes = 'nodes',
@@ -35,13 +35,22 @@ export enum ProvisionKeys {
   DiffusionModels = 'diffusion_models'
 }
 
+export enum RunType {
+  SSH = 'ssh',
+  Jupyter = 'jupyter',
+  Args = 'args'
+}
+
 export type Template = {
   description?: string;
-  hash: string;
+  environment?: Record<string, string>;
+  hash?: string;
   name: string;
-  size: number;
+  provision?: Partial<Record<ProvisionKey, string[]>>;
+  runType?: RunType;
   script?: string;
-  provision?: Partial<Record<ProvisionKeys, string[]>>;
+  size: number;
+  tag?: string;
 };
 
 export type CreateInstanceResponse = {

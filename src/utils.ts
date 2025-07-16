@@ -17,6 +17,7 @@ import {
   Offer,
   Offers,
   ProvisionOptions,
+  RunType,
   Template
 } from './types.js';
 
@@ -232,10 +233,27 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
       `Deploying ${templateInfo.name} (template ${templateInfo.hash}) to instance ${choice}...`
     );
 
-    const environmentVars: Record<string, string> = {};
+    const environmentVars: Record<string, string> = {
+      ...templateInfo.environment
+    };
 
     if (templateInfo.script) {
       environmentVars.PROVISIONER_SCRIPT = await getScriptUrl(templateInfo);
+    }
+
+    const request: Record<string, unknown> = {
+      extra_env: environmentVars,
+      runtype: templateInfo.runType ?? RunType.Jupyter,
+      disk: templateInfo.size / 1e9, // convert to GB
+      target_state: 'running',
+      cancel_unavail: true,
+      vm: false
+    };
+
+    if (templateInfo.hash) {
+      request.template_hash_id = templateInfo.hash;
+    } else if (templateInfo.tag) {
+      request.image = templateInfo.tag;
     }
 
     const deployResponse = await fetch(`${baseApiUrl}/asks/${chosen.id}`, {
@@ -244,14 +262,7 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
         Authorization: `Bearer ${process.env.VAST_API_KEY}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        template_hash_id: templateInfo.hash,
-        extra_env: environmentVars,
-        disk: templateInfo.size / 1e9, // convert to GB
-        target_state: 'running',
-        cancel_unavail: true,
-        vm: false
-      })
+      body: JSON.stringify(request)
     });
     const result =
       (await deployResponse.json()) as unknown as CreateInstanceResponse;

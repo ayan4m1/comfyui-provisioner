@@ -80,12 +80,17 @@
       },
       "type": "object"
     },
+    "runType": {
+      "description": "The mode to run the Vast.ai instance with",
+      "type": "string",
+      "enum": ["ssh", "jupyter", "args"]
+    },
     "script": {
       "description": "A provisioning script to run",
       "type": "string"
     },
     "size": {
-      "description": "The recommended disk allocation for the template",
+      "description": "The disk allocation for the template",
       "exclusiveMinimum": 0,
       "type": "integer"
     },
@@ -100,7 +105,7 @@
       "required": ["hash"]
     },
     {
-      "required": ["tag"]
+      "required": ["tag", "runType"]
     }
   ]
 }
