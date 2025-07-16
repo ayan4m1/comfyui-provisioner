@@ -1,10 +1,15 @@
 {
   "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/template.schema.json",
   "description": "An install with only Flux Kontext",
+  "environment": {
+    "OPEN_BUTTON_PORT": "1111",
+    "OPEN_BUTTON_TOKEN": "1",
+    "JUPYTER_DIR": "/",
+    "DATA_DIRECTORY": "/workspace/",
+    "PORTAL_CONFIG": "localhost:1111:11111:/:Instance Portal|localhost:8188:18188:/:ComfyUI|localhost:8080:18080:/:Jupyter|localhost:8080:8080:/terminals/1:Jupyter Terminal|localhost:8384:18384:/:Syncthing",
+    "COMFYUI_ARGS": "--disable-auto-launch --port 18188 --enable-cors-header"
+  },
   "name": "ComfyUI - Flux Kontext",
-  "script": "comfyui.sh",
-  "size": 4e10,
-  "tag": "vastai/comfy:cuda-12.8-auto",
   "provision": {
     "clip_models": [
       "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors"
@@ -30,5 +35,8 @@
       "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/flux-kontext.json"
     ]
   },
-  "runType": "jupyter"
+  "runType": "jupyter",
+  "script": "comfyui.sh",
+  "size": 4e10,
+  "tag": "vastai/comfy:cuda-12.8-auto"
 }
