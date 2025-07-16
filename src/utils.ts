@@ -207,7 +207,7 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
               exponent: 3,
               round: 0,
               roundingMethod: 'floor'
-            }),
+            }), // convert GB to bytes, then format as rounded GB
             `${Math.floor(offer.inet_down)} Mbps`,
             `$${offer.search.totalHour.toFixed(3)}/hr`
           ),
@@ -216,7 +216,7 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
       loop: false
     });
     const chosen = offers.find((offer) => offer.id === choice);
-    const hourlyDiskCost = chosen.search.diskHour * (templateInfo.size / 1e10); // in GB/hr
+    const hourlyDiskCost = chosen.search.diskHour * (templateInfo.size / 1e10); // convert to GB/hr
     const hourlyCost = `$${(chosen.search.gpuCostPerHour + hourlyDiskCost).toFixed(3)}/hr`;
     const storageCost = `$${hourlyDiskCost.toFixed(3)}/hr`;
     const confirmed = await confirm({
@@ -247,7 +247,7 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
       body: JSON.stringify({
         template_hash_id: templateInfo.hash,
         extra_env: environmentVars,
-        disk: templateInfo.size / 1e9, // in GB
+        disk: templateInfo.size / 1e9, // convert to GB
         target_state: 'running',
         cancel_unavail: true,
         vm: false
