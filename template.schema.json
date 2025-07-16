@@ -1,32 +1,90 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://bulletlogic.com/template.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Template",
   "description": "A template used to deploy a service to Vast.ai",
   "type": "object",
   "properties": {
-    "name": {
-      "description": "The short name for the template",
-      "type": "string",
-      "exclusiveMinimum": 0
-    },
     "description": {
       "description": "The long-form description for the template",
       "type": "string"
     },
     "hash": {
       "description": "The template hash from Vast.ai",
-      "type": "string",
-      "exclusiveMinimum": 0
+      "exclusiveMinimum": 0,
+      "type": "string"
+    },
+    "name": {
+      "description": "The short name for the template",
+      "exclusiveMinimum": 0,
+      "type": "string"
+    },
+    "provision": {
+      "description": "A list of dependencies to add to the instance on startup",
+      "properties": {
+        "apt_packages": {
+          "description": "List of system packages to install",
+          "type": "array"
+        },
+        "checkpoint_models": {
+          "description": "List of checkpoints to install",
+          "type": "array"
+        },
+        "clip_models": {
+          "description": "List of CLIP models to install",
+          "type": "array"
+        },
+        "controlnet_models": {
+          "description": "List of ControlNet models to install",
+          "type": "array"
+        },
+        "diffusion_models": {
+          "description": "List of diffusion models to install",
+          "type": "array"
+        },
+        "esrgan_models": {
+          "description": "List of ESRGAN upscaler models to install",
+          "type": "array"
+        },
+        "lora_models": {
+          "description": "List of LoRAs to install",
+          "type": "array"
+        },
+        "nodes": {
+          "description": "List of ComfyUI node repos to install",
+          "type": "array"
+        },
+        "pip_packages": {
+          "description": "List of pip packages to install",
+          "type": "array"
+        },
+        "text_encoder_models": {
+          "description": "List of text encoder models to install",
+          "type": "array"
+        },
+        "unet_models": {
+          "description": "List of UNet models to install",
+          "type": "array"
+        },
+        "vae_models": {
+          "description": "List of VAE models to install",
+          "type": "array"
+        },
+        "workflows": {
+          "description": "List of ComfyUI workflows to install",
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "script": {
+      "description": "A provisioning script to run",
+      "type": "string"
     },
     "size": {
       "description": "The recommended disk allocation for the template",
-      "type": "integer",
-      "exclusiveMinimum": 0
-    },
-    "environment": {
-      "description": "Key-value pairs to use for instance environment variables",
-      "type": "object"
+      "exclusiveMinimum": 0,
+      "type": "integer"
     }
   },
   "required": ["name", "hash", "size"]

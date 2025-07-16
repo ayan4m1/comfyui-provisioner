@@ -107,6 +107,75 @@ const getOffers = async (options: ProvisionOptions) => {
   return result;
 };
 
+const formatBashArray = (items: string[]) =>
+  items ? items.map((item) => `    "${item}"`).join('\n') : '';
+
+const getScriptUrl = async (template: Template) => {
+  try {
+    const scriptPath = join(getPackageJsonPath(), 'scripts', template.script);
+    if (!existsSync(scriptPath)) {
+      console.error(`Could not find script at ${scriptPath}!`);
+      return '';
+    }
+
+    const rawScript = await readFile(scriptPath, 'utf-8');
+    const {
+      apt_packages,
+      pip_packages,
+      nodes,
+      workflows,
+      clip_models,
+      checkpoint_models,
+      unet_models,
+      lora_models,
+      vae_models,
+      esrgan_models,
+      controlnet_models,
+      text_encoder_models,
+      diffusion_models
+    } = template.provision;
+
+    const finalScript = rawScript
+      .replace('{{ APT_PACKAGES }}', formatBashArray(apt_packages))
+      .replace('{{ PIP_PACKAGES }}', formatBashArray(pip_packages))
+      .replace('{{ NODES }}', formatBashArray(nodes))
+      .replace('{{ WORKFLOWS }}', formatBashArray(workflows))
+      .replace('{{ CLIP_MODELS }}', formatBashArray(clip_models))
+      .replace('{{ CHECKPOINT_MODELS }}', formatBashArray(checkpoint_models))
+      .replace('{{ UNET_MODELS }}', formatBashArray(unet_models))
+      .replace('{{ LORA_MODELS }}', formatBashArray(lora_models))
+      .replace('{{ VAE_MODELS }}', formatBashArray(vae_models))
+      .replace('{{ ESRGAN_MODELS }}', formatBashArray(esrgan_models))
+      .replace('{{ CONTROLNET_MODELS }}', formatBashArray(controlnet_models))
+      .replace(
+        '{{ TEXT_ENCODER_MODELS }}',
+        formatBashArray(text_encoder_models)
+      )
+      .replace('{{ DIFFUSION_MODELS }}', formatBashArray(diffusion_models));
+
+    const postData = new FormData();
+
+    postData.append('api_dev_key', process.env.PASTEBIN_API_KEY);
+    postData.append('api_option', 'paste');
+    postData.append('api_paste_code', finalScript);
+    postData.append('api_paste_private', '1');
+    postData.append('api_paste_format', 'bash');
+    postData.append('api_paste_name', 'provision.sh');
+    postData.append('api_paste_expire_date', '10M');
+
+    const result = await fetch('https://pastebin.com/api/api_post.php', {
+      method: 'POST',
+      body: postData
+    });
+    const url = await result.text();
+
+    return url.replace('pastebin.com/', 'pastebin.com/raw/');
+  } catch (error) {
+    console.error(error);
+    return '';
+  }
+};
+
 export const provision = async (options: ProvisionOptions): Promise<void> => {
   try {
     const templatePath = await chooseTemplate(options);
@@ -159,6 +228,12 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
       `Deploying ${templateInfo.name} (template ${templateInfo.hash}) to instance ${choice}...`
     );
 
+    const environmentVars: Record<string, string> = {};
+
+    if (templateInfo.provision) {
+      environmentVars.PROVISIONER_SCRIPT = await getScriptUrl(templateInfo);
+    }
+
     const deployResponse = await fetch(`${baseApiUrl}/asks/${chosen.id}`, {
       method: 'PUT',
       headers: {
@@ -167,7 +242,7 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
       },
       body: JSON.stringify({
         template_hash_id: templateInfo.hash,
-        extra_env: templateInfo.environment,
+        extra_env: environmentVars,
         disk: templateInfo.size / 1e9, // in GB
         target_state: 'running',
         cancel_unavail: true,

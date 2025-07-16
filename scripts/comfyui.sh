@@ -5,70 +5,57 @@ COMFYUI_DIR=${WORKSPACE}/ComfyUI
 
 # Packages are installed after nodes so we can fix them...
 
-APT_PACKAGES=()
+APT_PACKAGES=(
+{{ APT_PACKAGES }}
+)
 
 PIP_PACKAGES=(
-    "xformers"
+{{ PIP_PACKAGES }}
 )
 
 NODES=(
-    "https://github.com/city96/ComfyUI-GGUF"
-    "https://github.com/liusida/ComfyUI-Login"
-    "https://github.com/kijai/ComfyUI-KJNodes"
-    "https://github.com/ltdrdata/ComfyUI-Manager"
-    "https://github.com/ltdrdata/was-node-suite-comfyui"
-    "https://github.com/ZHO-ZHO-ZHO/ComfyUI-BRIA_AI-RMBG"
-    "https://github.com/Fannovel16/comfyui_controlnet_aux"
+{{ NODES }}
 )
 
 WORKFLOWS=(
-    "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/animagine-4.json"
-    "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/generator-waifu.json"
-    "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/generator-pokemon.json"
-    "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/txt2img.json"
-    "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/img2img.json"
-    "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/txt2img_cn.json"
-    "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/img2img_cn.json"
-    "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/upscaler.json"
+{{ WORKFLOWS }}
 )
 
-CLIP_MODELS=()
+CLIP_MODELS=(
+{{ CLIP_MODELS }}
+)
 
 CHECKPOINT_MODELS=(
-    "https://civitai.com/api/download/models/1759168?type=Model&format=SafeTensor&size=full&fp=fp16" # JuggernautXL Ragnarok
-    "https://huggingface.co/cagliostrolab/animagine-xl-4.0/resolve/main/animagine-xl-4.0.safetensors"
-    "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors"
-    "https://huggingface.co/AIWorksMD/pixelArtDiffusionXL/resolve/main/pixelArtDiffusionXL_spriteShaper.safetensors"
+{{ CHECKPOINT_MODELS }}
 )
 
-UNET_MODELS=()
+UNET_MODELS=(
+{{ UNET_MODELS }}
+)
 
 LORA_MODELS=(
-    "https://civitai.com/api/download/models/135931?type=Model&format=SafeTensor" # Pixel Art XL
-    "https://civitai.com/api/download/models/220405?type=Model&format=SafeTensor" # Transparent Glass Body
+{{ LORA_MODELS }}
 )
 
-VAE_MODELS=()
+VAE_MODELS=(
+{{ VAE_MODELS }}
+)
 
 ESRGAN_MODELS=(
-    "https://github.com/Phhofm/models/releases/download/4xNomos2_hq_dat2/4xNomos2_hq_dat2.pth"
-    "https://github.com/Kim2091/Kim2091-Models/releases/download/2x-AnimeSharpV4/2x-AnimeSharpV4_RCAN.safetensors"
-    "https://github.com/Kim2091/Kim2091-Models/releases/download/2x-AnimeSharpV2_Set/2x-AnimeSharpV2_RPLKSR_Sharp.pth"
-    "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth"
+{{ ESRGAN_MODELS }}
 )
 
 CONTROLNET_MODELS=(
-    "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/t2i-adapter_diffusers_xl_canny.safetensors"
-    "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/t2i-adapter_diffusers_xl_depth_midas.safetensors"
-    "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/t2i-adapter_diffusers_xl_depth_zoe.safetensors"
-    "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/t2i-adapter_diffusers_xl_lineart.safetensors"
-    "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/t2i-adapter_diffusers_xl_openpose.safetensors"
-    "https://huggingface.co/lllyasviel/sd_control_collection/resolve/main/t2i-adapter_diffusers_xl_sketch.safetensors"
+{{ CONTROLNET_MODELS }}
 )
 
-TEXT_ENCODERS=()
+TEXT_ENCODER_MODELS=(
+{{ TEXT_ENCODER_MODELS }}
+)
 
-DIFFUSION_MODELS=()
+DIFFUSION_MODELS=(
+{{ DIFFUSION_MODELS }}
+)
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
@@ -88,7 +75,7 @@ function provisioning_start() {
         "${UNET_MODELS[@]}"
     provisioning_get_files \
         "${COMFYUI_DIR}/models/text_encoders" \
-        "${TEXT_ENCODERS[@]}"
+        "${TEXT_ENCODER_MODELS[@]}"
     provisioning_get_files \
         "${COMFYUI_DIR}/models/diffusion_models" \
         "${DIFFUSION_MODELS[@]}"

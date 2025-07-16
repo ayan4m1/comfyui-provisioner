@@ -19,12 +19,29 @@ export type Offers = {
   offers: Offer[];
 };
 
+export enum ProvisionKeys {
+  AptPackages = 'apt_packages',
+  PipPackages = 'pip_packages',
+  Nodes = 'nodes',
+  Workflows = 'workflows',
+  ClipModels = 'clip_models',
+  CheckpointModels = 'checkpoint_models',
+  UnetModels = 'unet_models',
+  LoraModels = 'lora_models',
+  VaeModels = 'vae_models',
+  EsrganModels = 'esrgan_models',
+  ControlNetModels = 'controlnet_models',
+  TextEncoderModels = 'text_encoder_models',
+  DiffusionModels = 'diffusion_models'
+}
+
 export type Template = {
   description?: string;
-  environment?: Record<string, string>;
   hash: string;
   name: string;
   size: number;
+  script?: string;
+  provision?: Partial<Record<ProvisionKeys, string[]>>;
 };
 
 export type CreateInstanceResponse = {
