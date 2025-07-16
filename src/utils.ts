@@ -96,7 +96,7 @@ const getOffers = async (options: ProvisionOptions) => {
       },
       redirect: 'follow'
     });
-    const { offers } = JSON.parse(await response.text()) as unknown as Offers;
+    const { offers } = (await response.json()) as unknown as Offers;
 
     result.push(...offers);
   } catch (error) {
@@ -249,9 +249,8 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
         vm: false
       })
     });
-    const result = JSON.parse(
-      await deployResponse.text()
-    ) as unknown as CreateInstanceResponse;
+    const result =
+      (await deployResponse.json()) as unknown as CreateInstanceResponse;
 
     if (result.success) {
       console.log(`Instance ${result.new_contract} created!`);
