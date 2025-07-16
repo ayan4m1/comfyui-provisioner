@@ -20,6 +20,7 @@ import {
   Template
 } from './types.js';
 
+const pastebinApiUrl = 'https://pastebin.com/api/api_post.php';
 const baseApiUrl = 'https://console.vast.ai/api/v0';
 const rtx5000Regex = /rtx\s*5[0-9]{3}/i;
 
@@ -163,7 +164,7 @@ const getScriptUrl = async (template: Template) => {
     postData.append('api_paste_name', 'provision.sh');
     postData.append('api_paste_expire_date', '10M');
 
-    const result = await fetch('https://pastebin.com/api/api_post.php', {
+    const result = await fetch(pastebinApiUrl, {
       method: 'POST',
       body: postData
     });
