@@ -37,6 +37,6 @@
   },
   "runType": "jupyter",
   "script": "comfyui.sh",
-  "size": 4e10,
+  "size": 20e9,
   "tag": "vastai/comfy:cuda-12.8-auto"
 }
