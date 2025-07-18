@@ -187,7 +187,7 @@ const getScriptUrl = async (template: Template) => {
   }
 };
 
-const formatChoices = (offers: Offer[]) =>
+const formatChoices = (options: ProvisionOptions, offers: Offer[]) =>
   offers
     .filter((offer) => !rtx5000Regex.test(offer.gpu_name))
     .filter((offer) => offer.search.totalHour <= options.maxHourlyCost)
@@ -214,7 +214,7 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
 
     const choice = await select<number>({
       message: 'Choose the instance you would like to request.',
-      choices: formatChoices(offers),
+      choices: formatChoices(options, offers),
       loop: false
     });
     const chosen = offers.find((offer) => offer.id === choice);
