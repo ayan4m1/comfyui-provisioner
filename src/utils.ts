@@ -30,50 +30,62 @@ const getInstallDirectory = (): string =>
 
 const getPackageJsonPath = (): string => resolve(getInstallDirectory(), '..');
 
+const formatBashArray = (items: string[]) =>
+  items ? items.map((item) => `    "${item}"`).join('\n') : '';
+
 export const getPackageInfo = async (): Promise<PackageJson> =>
   (await packageJsonModule.load(getPackageJsonPath()))?.content;
 
 const chooseTemplate = async (options: ProvisionOptions) => {
-  const baseTemplatePath = join(getPackageJsonPath(), 'templates');
+  try {
+    const baseTemplatePath = join(getPackageJsonPath(), 'templates');
 
-  let templatePath: string;
+    let templatePath: string;
 
-  if (!options.template) {
-    const templatePaths = await readdir(baseTemplatePath);
-    const templateFiles = await Promise.all(
-      templatePaths.map((path) =>
-        readFile(join(baseTemplatePath, path), 'utf-8')
-      )
-    );
-    const chosenTemplate = await select<string>({
-      message: 'Please choose a template to deploy',
-      choices: templatePaths.map((path, index) => {
-        const contents = JSON.parse(
-          templateFiles[index]
-        ) as unknown as Template;
+    if (!options.template) {
+      const templatePaths = await readdir(baseTemplatePath);
+      const templateFiles = await Promise.all(
+        templatePaths.map((path) =>
+          readFile(join(baseTemplatePath, path), 'utf-8')
+        )
+      );
+      const chosenTemplate = await select<string>({
+        message: 'Please choose a template to deploy',
+        choices: templatePaths.map((path, index) => {
+          const contents = JSON.parse(
+            templateFiles[index]
+          ) as unknown as Template;
 
-        return {
-          name: contents.description
-            ? `${contents.name} - ${contents.description}`
-            : contents.name,
-          value: path
-        };
-      })
-    });
+          return {
+            name: contents.description
+              ? `${contents.name} - ${contents.description}`
+              : contents.name,
+            value: path
+          };
+        })
+      });
 
-    templatePath = join(baseTemplatePath, chosenTemplate);
-  } else {
-    templatePath = join(baseTemplatePath, `${options.template}.json`);
+      templatePath = join(baseTemplatePath, chosenTemplate);
+    } else {
+      templatePath = join(baseTemplatePath, `${options.template}.json`);
+    }
+
+    if (!existsSync(templatePath)) {
+      throw new Error(`Unable to find template at ${templatePath}!`);
+    }
+
+    return JSON.parse(
+      await readFile(templatePath, 'utf-8')
+    ) as unknown as Template;
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
   }
-
-  return templatePath;
 };
 
 const getOffers = async (options: ProvisionOptions) => {
-  const result: Offer[] = [];
-
   try {
-    const response = await fetch(`${baseApiUrl}/search/asks/`, {
+    const response = await fetch(`${baseApiUrl}/search/asks`, {
       method: 'PUT',
       body: JSON.stringify({
         q: {
@@ -100,24 +112,18 @@ const getOffers = async (options: ProvisionOptions) => {
     });
     const { offers } = (await response.json()) as unknown as Offers;
 
-    result.push(...offers);
+    return offers;
   } catch (error) {
-    console.error('Error occurred during Vast.ai instance search!');
     console.error(error);
+    process.exit(1);
   }
-
-  return result;
 };
-
-const formatBashArray = (items: string[]) =>
-  items ? items.map((item) => `    "${item}"`).join('\n') : '';
 
 const getScriptUrl = async (template: Template) => {
   try {
     const scriptPath = join(getPackageJsonPath(), 'scripts', template.script);
     if (!existsSync(scriptPath)) {
-      console.error(`Could not find script at ${scriptPath}!`);
-      return '';
+      throw new Error(`Could not find script at ${scriptPath}!`);
     }
 
     let script = await readFile(scriptPath, 'utf-8');
@@ -177,51 +183,48 @@ const getScriptUrl = async (template: Template) => {
     return url.replace('pastebin.com/', 'pastebin.com/raw/');
   } catch (error) {
     console.error(error);
-    return '';
+    process.exit(1);
   }
 };
 
+const formatChoices = (offers: Offer[]) =>
+  offers
+    .filter((offer) => !rtx5000Regex.test(offer.gpu_name))
+    .filter((offer) => offer.search.totalHour <= options.maxHourlyCost)
+    .map((offer) => ({
+      name: sprintf(
+        '%-16s %-12s %s %8s %s',
+        offer.geolocation,
+        offer.gpu_name,
+        filesize(offer.gpu_ram * 1e6, {
+          exponent: 3,
+          round: 0,
+          roundingMethod: 'floor'
+        }), // convert GB to bytes, then format as rounded GB
+        `${Math.floor(offer.inet_down)} Mbps`,
+        `$${offer.search.totalHour.toFixed(3)}/hr`
+      ),
+      value: offer.id
+    }));
+
 export const provision = async (options: ProvisionOptions): Promise<void> => {
   try {
-    const templatePath = await chooseTemplate(options);
-
-    if (!existsSync(templatePath)) {
-      return console.error(`Unable to find template at ${templatePath}!`);
-    }
-
-    const templateInfo = JSON.parse(
-      await readFile(templatePath, 'utf-8')
-    ) as unknown as Template;
-
+    const templateInfo = await chooseTemplate(options);
     const offers = await getOffers(options);
+
     const choice = await select<number>({
       message: 'Choose the instance you would like to request.',
-      choices: offers
-        .filter((offer) => !rtx5000Regex.test(offer.gpu_name))
-        .filter((offer) => offer.search.totalHour <= options.maxHourlyCost)
-        .map((offer) => ({
-          name: sprintf(
-            '%-16s %-12s %s %8s %s',
-            offer.geolocation,
-            offer.gpu_name,
-            filesize(offer.gpu_ram * 1e6, {
-              exponent: 3,
-              round: 0,
-              roundingMethod: 'floor'
-            }), // convert GB to bytes, then format as rounded GB
-            `${Math.floor(offer.inet_down)} Mbps`,
-            `$${offer.search.totalHour.toFixed(3)}/hr`
-          ),
-          value: offer.id
-        })),
+      choices: formatChoices(offers),
       loop: false
     });
     const chosen = offers.find((offer) => offer.id === choice);
     const hourlyDiskCost = chosen.search.diskHour * (templateInfo.size / 1e10); // convert to GB/hr
     const hourlyCost = `$${(chosen.search.gpuCostPerHour + hourlyDiskCost).toFixed(3)}/hr`;
     const storageCost = `$${hourlyDiskCost.toFixed(3)}/hr`;
+    const confirmMessage = `Are you SURE you want create the instance?\n\nIt will be automatically destroyed in ${formatDistanceToNow(fromUnixTime(chosen.end_date))}.\n\nYou will be charged ${hourlyCost} while it is running and ${storageCost} while it is stopped!\n\nIt is YOUR responsibility to make sure that it has been stopped or destroyed correctly.\n`;
+
     const confirmed = await confirm({
-      message: `Are you SURE you want create the instance?\n\nIt will be automatically destroyed in ${formatDistanceToNow(fromUnixTime(chosen.end_date))}.\n\nYou will be charged ${hourlyCost} while it is running and ${storageCost} while it is stopped!\n\nIt is YOUR responsibility to make sure that it has been stopped or destroyed correctly.\n`,
+      message: confirmMessage,
       default: false
     });
 
@@ -260,6 +263,7 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${process.env.VAST_API_KEY}`,
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(request)
@@ -273,8 +277,35 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
       console.log('Failed to create instance!');
     }
 
-    console.log('\nPress Ctrl-C when you are ready to destroy the instance...');
+    console.log(
+      '\nPress Ctrl-D to stop the instance, or Ctrl-C to destroy it...'
+    );
     process.stdin.resume();
+    process.on('SIGQUIT', async () => {
+      if (!result.new_contract) {
+        console.error('No instance to stop! Exiting...');
+        return process.exit(0);
+      }
+
+      try {
+        await fetch(`${baseApiUrl}/instances/${result.new_contract}`, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${process.env.VAST_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            state: 'stopped'
+          })
+        });
+
+        console.log(`Instance ${result.new_contract} stopped! Exiting...`);
+        process.exit(0);
+      } catch (error) {
+        console.error(error);
+        process.exit(1);
+      }
+    });
     process.on('SIGINT', async () => {
       if (!result.new_contract) {
         console.error('No instance to destroy! Exiting...');
