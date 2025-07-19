@@ -13,6 +13,7 @@ PIP_PACKAGES=(
 
 NODES=(
     "https://github.com/ltdrdata/ComfyUI-Manager"
+    "https://github.com/city96/ComfyUI-GGUF"
     "https://github.com/kijai/ComfyUI-KJNodes"
     "https://github.com/ltdrdata/was-node-suite-comfyui"
     "https://github.com/kijai/ComfyUI-HunyuanVideoWrapper"
@@ -21,7 +22,9 @@ NODES=(
 
 WORKFLOWS=()
 
-CLIP_MODELS=()
+CLIP_MODELS=(
+    "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors"
+)
 
 CHECKPOINT_MODELS=()
 
@@ -29,7 +32,9 @@ UNET_MODELS=()
 
 LORA_MODELS=()
 
-VAE_MODELS=()
+VAE_MODELS=(
+    "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors"
+)
 
 ESRGAN_MODELS=(
     "https://github.com/Phhofm/models/releases/download/4xNomos2_hq_dat2/4xNomos2_hq_dat2.pth"
