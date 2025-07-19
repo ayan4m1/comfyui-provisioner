@@ -37,6 +37,10 @@
           "description": "List of CLIP models to install",
           "type": "array"
         },
+        "clip_vision_models": {
+          "description": "List of CLIP vision models to install",
+          "type": "array"
+        },
         "controlnet_models": {
           "description": "List of ControlNet models to install",
           "type": "array"

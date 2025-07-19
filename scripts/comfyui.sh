@@ -25,6 +25,10 @@ CLIP_MODELS=(
 {{ CLIP_MODELS }}
 )
 
+CLIP_VISION_MODELS=(
+{{ CLIP_VISION_MODELS }}
+)
+
 CHECKPOINT_MODELS=(
 {{ CHECKPOINT_MODELS }}
 )
@@ -67,6 +71,9 @@ function provisioning_start() {
     provisioning_get_files \
         "${COMFYUI_DIR}/models/clip" \
         "${CLIP_MODELS[@]}"
+    provisioning_get_files \
+        "${COMFYUI_DIR}/models/clip_vision" \
+        "${CLIP_VISION_MODELS[@]}"
     provisioning_get_files \
         "${COMFYUI_DIR}/models/checkpoints" \
         "${CHECKPOINT_MODELS[@]}"

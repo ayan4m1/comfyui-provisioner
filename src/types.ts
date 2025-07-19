@@ -25,6 +25,7 @@ export enum ProvisionKey {
   Nodes = 'nodes',
   Workflows = 'workflows',
   ClipModels = 'clip_models',
+  ClipVisionModels = 'clip_vision_models',
   CheckpointModels = 'checkpoint_models',
   UnetModels = 'unet_models',
   LoraModels = 'lora_models',

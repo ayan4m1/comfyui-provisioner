@@ -135,6 +135,7 @@ const getScriptUrl = async (template: Template) => {
         nodes,
         workflows,
         clip_models,
+        clip_vision_models,
         checkpoint_models,
         unet_models,
         lora_models,
@@ -151,6 +152,10 @@ const getScriptUrl = async (template: Template) => {
         .replace('{{ NODES }}', formatBashArray(nodes))
         .replace('{{ WORKFLOWS }}', formatBashArray(workflows))
         .replace('{{ CLIP_MODELS }}', formatBashArray(clip_models))
+        .replace(
+          '{{ CLIP_VISION_MODELS }}',
+          formatBashArray(clip_vision_models)
+        )
         .replace('{{ CHECKPOINT_MODELS }}', formatBashArray(checkpoint_models))
         .replace('{{ UNET_MODELS }}', formatBashArray(unet_models))
         .replace('{{ LORA_MODELS }}', formatBashArray(lora_models))
