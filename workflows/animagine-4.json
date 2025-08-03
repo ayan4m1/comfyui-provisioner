@@ -1,946 +1,219 @@
 {
-  "id": "b1df75cf-8a1f-4d3f-bdec-8939d83f4692",
-  "revision": 0,
-  "last_node_id": 29,
-  "last_link_id": 24,
-  "nodes": [
-    {
-      "id": 9,
-      "type": "CLIPTextEncode",
-      "pos": [
-        709.18359375,
-        317.2444152832031
-      ],
-      "size": [
-        301.33331298828125,
-        115.33334350585938
-      ],
-      "flags": {
-        "collapsed": true
-      },
-      "order": 10,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 2
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            3
-          ]
-        }
-      ],
-      "title": "Negative Prompt",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": [
-        "lowres, bad anatomy, bad hands, text, error, missing finger, extra digits, fewer digits, cropped, worst quality, low quality, low score, bad score, average score, signature, watermark, username, blurry"
-      ],
-      "color": "#322",
-      "bgcolor": "#533"
-    },
-    {
-      "id": 8,
-      "type": "CLIPTextEncode",
-      "pos": [
-        714.5169067382812,
-        257.9110107421875
-      ],
-      "size": [
-        380.66668701171875,
-        129.33334350585938
-      ],
-      "flags": {
-        "collapsed": true
-      },
-      "order": 15,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 1
-        },
-        {
-          "name": "text",
-          "type": "STRING",
-          "widget": {
-            "name": "text"
-          },
-          "link": 16
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            4
-          ]
-        }
-      ],
-      "title": "Positive Prompt",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": [
-        ""
-      ],
-      "color": "#232",
-      "bgcolor": "#353"
-    },
-    {
-      "id": 1,
-      "type": "CheckpointLoaderSimple",
-      "pos": [
-        374.66668701171875,
-        230.00001525878906
-      ],
-      "size": [
-        270,
-        98
-      ],
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            5
-          ]
-        },
-        {
-          "name": "CLIP",
-          "type": "CLIP",
-          "links": [
-            1,
-            2
-          ]
-        },
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [
-            8
-          ]
-        }
-      ],
-      "title": "Load Model",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "CheckpointLoaderSimple"
-      },
-      "widgets_values": [
-        "animagine-xl-4.0-opt.safetensors"
-      ],
-      "color": "#223",
-      "bgcolor": "#335"
-    },
-    {
-      "id": 20,
-      "type": "PrimitiveString",
-      "pos": [
-        -210.214599609375,
-        84.98599243164062
-      ],
-      "size": [
-        270,
-        58
-      ],
-      "flags": {
-        "collapsed": true
-      },
-      "order": 1,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": []
-        }
-      ],
-      "title": "Style - 90s",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "PrimitiveString"
-      },
-      "widgets_values": [
-        "1990s, retro artstyle"
-      ],
-      "color": "#323",
-      "bgcolor": "#535"
-    },
-    {
-      "id": 21,
-      "type": "PrimitiveString",
-      "pos": [
-        -210.214599609375,
-        189.59889221191406
-      ],
-      "size": [
-        270,
-        58
-      ],
-      "flags": {
-        "collapsed": true
-      },
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": []
-        }
-      ],
-      "title": "Style - Pixel Art",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "PrimitiveString"
-      },
-      "widgets_values": [
-        "pixel art"
-      ],
-      "color": "#323",
-      "bgcolor": "#535"
-    },
-    {
-      "id": 29,
-      "type": "PrimitiveString",
-      "pos": [
-        -210.214599609375,
-        137.29244995117188
-      ],
-      "size": [
-        270,
-        58
-      ],
-      "flags": {
-        "collapsed": true
-      },
-      "order": 3,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": []
-        }
-      ],
-      "title": "Style - Bokeh",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "PrimitiveString"
-      },
-      "widgets_values": [
-        "bokeh, soft lighting"
-      ],
-      "color": "#323",
-      "bgcolor": "#535"
-    },
-    {
-      "id": 19,
-      "type": "PrimitiveString",
-      "pos": [
-        -210.214599609375,
-        32.67954635620117
-      ],
-      "size": [
-        270,
-        58
-      ],
-      "flags": {
-        "collapsed": true
-      },
-      "order": 4,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": null
-        }
-      ],
-      "title": "Style - Lineart",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "PrimitiveString"
-      },
-      "widgets_values": [
-        "lineart"
-      ],
-      "color": "#323",
-      "bgcolor": "#535"
-    },
-    {
-      "id": 22,
-      "type": "PrimitiveString",
-      "pos": [
-        -210.214599609375,
-        -19.626901626586914
-      ],
-      "size": [
-        261.3484802246094,
-        58
-      ],
-      "flags": {
-        "collapsed": true
-      },
-      "order": 5,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": []
-        }
-      ],
-      "title": "Style - Anim4gine",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "PrimitiveString"
-      },
-      "widgets_values": [
-        ", depth of field, faux traditional media, painterly, impressionism, photo background"
-      ],
-      "color": "#323",
-      "bgcolor": "#535"
-    },
-    {
-      "id": 2,
-      "type": "VAEDecode",
-      "pos": [
-        1300.666748046875,
-        243.33335876464844
-      ],
-      "size": [
-        140,
-        46
-      ],
-      "flags": {},
-      "order": 17,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "samples",
-          "type": "LATENT",
-          "link": 6
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 8
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            9
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "VAEDecode"
-      },
-      "widgets_values": [],
-      "color": "#233",
-      "bgcolor": "#355"
-    },
-    {
-      "id": 27,
-      "type": "PrimitiveString",
-      "pos": [
-        -210.214599609375,
-        -71.933349609375
-      ],
-      "size": [
-        270,
-        58
-      ],
-      "flags": {
-        "collapsed": true
-      },
-      "order": 6,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": []
-        }
-      ],
-      "title": "Style - Gainax",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "PrimitiveString"
-      },
-      "widgets_values": [
-        "studio gainax, production ig"
-      ],
-      "color": "#323",
-      "bgcolor": "#535"
-    },
-    {
-      "id": 3,
-      "type": "SaveImage",
-      "pos": [
-        1490,
-        258.66668701171875
-      ],
-      "size": [
-        802.2567138671875,
-        685.2406005859375
-      ],
-      "flags": {},
-      "order": 18,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 9
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34"
-      },
-      "widgets_values": [
-        "animagine-4"
-      ],
-      "color": "#432",
-      "bgcolor": "#653"
-    },
-    {
-      "id": 26,
-      "type": "PrimitiveStringMultiline",
-      "pos": [
-        -37.6427116394043,
-        134.17996215820312
-      ],
-      "size": [
-        322.2666320800781,
-        196.33335876464844
-      ],
-      "flags": {},
-      "order": 7,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            17
-          ]
-        }
-      ],
-      "title": "Main Prompt",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "PrimitiveStringMultiline"
-      },
-      "widgets_values": [
-        "1girl, purple hair, exotic princess dress, green eyes, sitting on disheveled bed at night"
-      ],
-      "color": "#232",
-      "bgcolor": "#353"
-    },
-    {
-      "id": 23,
-      "type": "Text Concatenate",
-      "pos": [
-        363.090576171875,
-        21.913436889648438
-      ],
-      "size": [
-        270,
-        142
-      ],
-      "flags": {},
-      "order": 11,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "text_a",
-          "shape": 7,
-          "type": "STRING",
-          "link": 17
-        },
-        {
-          "name": "text_b",
-          "shape": 7,
-          "type": "STRING",
-          "link": null
-        },
-        {
-          "name": "text_c",
-          "shape": 7,
-          "type": "STRING",
-          "link": null
-        },
-        {
-          "name": "text_d",
-          "shape": 7,
-          "type": "STRING",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": [
-            16
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "was-ns",
-        "ver": "3.0.0",
-        "Node name for S&R": "Text Concatenate"
-      },
-      "widgets_values": [
-        ", ",
-        "true"
-      ],
-      "color": "#323",
-      "bgcolor": "#535"
-    },
-    {
-      "id": 17,
-      "type": "PrimitiveInt",
-      "pos": [
-        -37.6427116394043,
-        409.5220947265625
-      ],
-      "size": [
-        270,
-        82
-      ],
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "INT",
-          "type": "INT",
-          "links": [
-            13,
-            14,
-            15
-          ]
-        }
-      ],
-      "title": "Batch Size",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "PrimitiveInt"
-      },
-      "widgets_values": [
-        4,
-        "fixed"
-      ],
-      "color": "#323",
-      "bgcolor": "#535"
-    },
-    {
-      "id": 28,
-      "type": "Text Multiline",
-      "pos": [
-        -186.0116729736328,
-        570.5308837890625
-      ],
-      "size": [
-        400,
-        200
-      ],
-      "flags": {},
-      "order": 9,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "STRING",
-          "type": "STRING",
-          "links": null
-        }
-      ],
-      "title": "Old Prompts",
-      "properties": {
-        "cnr_id": "was-ns",
-        "ver": "3.0.0",
-        "Node name for S&R": "Text Multiline"
-      },
-      "widgets_values": [
-        "1girl, red hair with fennec ears, red eyes, wicked smile, looking down, red corset with fishnet stockings"
+  "3": {
+    "inputs": {
+      "filename_prefix": "animagine-4",
+      "images": [
+        "33",
+        5
       ]
     },
-    {
-      "id": 10,
-      "type": "EmptyLatentImage",
-      "pos": [
-        374.66668701171875,
-        409.5220947265625
-      ],
-      "size": [
-        270,
-        106
-      ],
-      "flags": {},
-      "order": 12,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "batch_size",
-          "type": "INT",
-          "widget": {
-            "name": "batch_size"
-          },
-          "link": 13
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [
-            23
-          ]
-        }
-      ],
-      "title": "Landscape",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "EmptyLatentImage"
-      },
-      "widgets_values": [
-        1216,
-        832,
-        1
-      ],
-      "color": "#323",
-      "bgcolor": "#535"
-    },
-    {
-      "id": 15,
-      "type": "EmptyLatentImage",
-      "pos": [
-        374.66668701171875,
-        570.5308837890625
-      ],
-      "size": [
-        270,
-        106
-      ],
-      "flags": {},
-      "order": 13,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "batch_size",
-          "type": "INT",
-          "widget": {
-            "name": "batch_size"
-          },
-          "link": 14
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": []
-        }
-      ],
-      "title": "Portrait",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "EmptyLatentImage"
-      },
-      "widgets_values": [
-        768,
-        1344,
-        1
-      ],
-      "color": "#323",
-      "bgcolor": "#535"
-    },
-    {
-      "id": 16,
-      "type": "EmptyLatentImage",
-      "pos": [
-        374.66668701171875,
-        736.9251098632812
-      ],
-      "size": [
-        270,
-        106
-      ],
-      "flags": {},
-      "order": 14,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "batch_size",
-          "type": "INT",
-          "widget": {
-            "name": "batch_size"
-          },
-          "link": 15
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": null
-        }
-      ],
-      "title": "Square",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "EmptyLatentImage"
-      },
-      "widgets_values": [
-        1024,
-        1024,
-        1
-      ],
-      "color": "#323",
-      "bgcolor": "#535"
-    },
-    {
-      "id": 6,
-      "type": "KSampler",
-      "pos": [
-        975.3334350585938,
-        230.00003051757812
-      ],
-      "size": [
-        270,
-        262
-      ],
-      "flags": {},
-      "order": 16,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 5
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 4
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 3
-        },
-        {
-          "name": "latent_image",
-          "type": "LATENT",
-          "link": 23
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [
-            6
-          ]
-        }
-      ],
-      "title": "Sampler",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.34",
-        "Node name for S&R": "KSampler"
-      },
-      "widgets_values": [
-        490942196972012,
-        "randomize",
-        28,
-        5.5,
-        "dpmpp_2m_sde_gpu",
-        "exponential",
-        1
-      ],
-      "color": "#233",
-      "bgcolor": "#355"
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
     }
-  ],
-  "links": [
-    [
-      1,
-      1,
-      1,
-      8,
-      0,
-      "CLIP"
-    ],
-    [
-      2,
-      1,
-      1,
-      9,
-      0,
-      "CLIP"
-    ],
-    [
-      3,
-      9,
-      0,
-      6,
-      2,
-      "CONDITIONING"
-    ],
-    [
-      4,
-      8,
-      0,
-      6,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      5,
-      1,
-      0,
-      6,
-      0,
-      "MODEL"
-    ],
-    [
-      6,
-      6,
-      0,
-      2,
-      0,
-      "LATENT"
-    ],
-    [
-      8,
-      1,
-      2,
-      2,
-      1,
-      "VAE"
-    ],
-    [
-      9,
-      2,
-      0,
-      3,
-      0,
-      "IMAGE"
-    ],
-    [
-      13,
-      17,
-      0,
-      10,
-      0,
-      "INT"
-    ],
-    [
-      14,
-      17,
-      0,
-      15,
-      0,
-      "INT"
-    ],
-    [
-      15,
-      17,
-      0,
-      16,
-      0,
-      "INT"
-    ],
-    [
-      16,
-      23,
-      0,
-      8,
-      1,
-      "STRING"
-    ],
-    [
-      17,
-      26,
-      0,
-      23,
-      0,
-      "STRING"
-    ],
-    [
-      23,
-      10,
-      0,
-      6,
-      3,
-      "LATENT"
-    ]
-  ],
-  "groups": [],
-  "config": {},
-  "extra": {
-    "ds": {
-      "scale": 0.7695359104585854,
-      "offset": [
-        119.27424740529236,
-        61.135187322558146
+  },
+  "10": {
+    "inputs": {
+      "width": 1344,
+      "height": 768,
+      "batch_size": [
+        "17",
+        0
       ]
     },
-    "frontendVersion": "1.23.4",
-    "VHS_latentpreview": false,
-    "VHS_latentpreviewrate": 0,
-    "VHS_MetadataImage": true,
-    "VHS_KeepIntermediate": true
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Landscape"
+    }
   },
-  "version": 0.4
+  "15": {
+    "inputs": {
+      "width": 768,
+      "height": 1344,
+      "batch_size": [
+        "17",
+        0
+      ]
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Portrait"
+    }
+  },
+  "16": {
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": [
+        "17",
+        0
+      ]
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Square"
+    }
+  },
+  "17": {
+    "inputs": {
+      "value": 8
+    },
+    "class_type": "PrimitiveInt",
+    "_meta": {
+      "title": "Batch Size"
+    }
+  },
+  "19": {
+    "inputs": {
+      "value": "lineart"
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "Style - Lineart"
+    }
+  },
+  "20": {
+    "inputs": {
+      "value": "1990s, retro artstyle"
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "Style - 90s"
+    }
+  },
+  "21": {
+    "inputs": {
+      "value": "pixel art"
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "Style - Pixel Art"
+    }
+  },
+  "22": {
+    "inputs": {
+      "value": ", depth of field, faux traditional media, painterly, impressionism, photo background"
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "Style - Anim4gine"
+    }
+  },
+  "23": {
+    "inputs": {
+      "delimiter": ", ",
+      "clean_whitespace": "true",
+      "text_a": [
+        "26",
+        0
+      ],
+      "text_b": [
+        "22",
+        0
+      ]
+    },
+    "class_type": "Text Concatenate",
+    "_meta": {
+      "title": "Text Concatenate"
+    }
+  },
+  "26": {
+    "inputs": {
+      "value": "1girl, aerith gainsborough, final fantasy art, sitting on a bed, smiling and winking"
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Main Prompt"
+    }
+  },
+  "27": {
+    "inputs": {
+      "value": "studio gainax, production ig"
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "Style - Gainax"
+    }
+  },
+  "29": {
+    "inputs": {
+      "value": "bokeh, soft lighting"
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "Style - Bokeh"
+    }
+  },
+  "32": {
+    "inputs": {
+      "ckpt_name": "animagine-xl-4.0-opt.safetensors",
+      "vae_name": "Baked VAE",
+      "clip_skip": -1,
+      "lora_name": "None",
+      "lora_model_strength": 1,
+      "lora_clip_strength": 1,
+      "positive": [
+        "23",
+        0
+      ],
+      "negative": "lowres, bad anatomy, bad hands, text, error, missing finger, extra digits, fewer digits, cropped, worst quality, low quality, low score, bad score, average score, signature, watermark, username, blurry",
+      "token_normalization": "none",
+      "weight_interpretation": "comfy",
+      "empty_latent_width": 512,
+      "empty_latent_height": 512,
+      "batch_size": 1
+    },
+    "class_type": "Efficient Loader",
+    "_meta": {
+      "title": "Efficient Loader"
+    }
+  },
+  "33": {
+    "inputs": {
+      "seed": 471082476168730,
+      "steps": [
+        "34",
+        0
+      ],
+      "cfg": 7,
+      "sampler_name": "dpmpp_2m_sde_gpu",
+      "scheduler": "exponential",
+      "denoise": 1,
+      "preview_method": "auto",
+      "vae_decode": "true",
+      "model": [
+        "32",
+        0
+      ],
+      "positive": [
+        "32",
+        1
+      ],
+      "negative": [
+        "32",
+        2
+      ],
+      "latent_image": [
+        "10",
+        0
+      ],
+      "optional_vae": [
+        "32",
+        4
+      ]
+    },
+    "class_type": "KSampler (Efficient)",
+    "_meta": {
+      "title": "KSampler (Efficient)"
+    }
+  },
+  "34": {
+    "inputs": {
+      "value": 28
+    },
+    "class_type": "PrimitiveInt",
+    "_meta": {
+      "title": "Denoise Steps"
+    }
+  }
 }
