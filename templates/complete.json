@@ -68,14 +68,16 @@
     ],
     "workflows": [
       "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/animagine-4.json",
-      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/flux-dev.json",
       "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/flux-kontext.json",
-      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/generator-waifu.json",
+      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/flux-txt2img.json",
       "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/generator-pokemon.json",
-      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/sdxl-txt2img.json",
-      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/sdxl-img2img.json",
-      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/sdxl-controlnet.json",
+      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/generator-waifu.json",
+      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/pony-img2img.json",
+      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/pony-txt2img.json",
       "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/remove-bg.json",
+      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/sdxl-controlnet.json",
+      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/sdxl-img2img.json",
+      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/sdxl-txt2img.json",
       "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/upscaler.json"
     ]
   },
