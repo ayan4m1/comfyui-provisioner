@@ -1,0 +1,68 @@
+{
+  "1": {
+    "inputs": {},
+    "class_type": "BRIA_RMBG_ModelLoader_Zho",
+    "_meta": {
+      "title": "Load RMBG Model"
+    }
+  },
+  "2": {
+    "inputs": {
+      "rmbgmodel": [
+        "1",
+        0
+      ],
+      "image": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "BRIA_RMBG_Zho",
+    "_meta": {
+      "title": "Remove BG"
+    }
+  },
+  "3": {
+    "inputs": {
+      "image": "microworlds_00027_.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "4": {
+    "inputs": {
+      "filename_prefix": "bgremoved",
+      "images": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "8": {
+    "inputs": {
+      "padding_left": 0,
+      "padding_right": 0,
+      "padding_top": 0,
+      "padding_bottom": 0,
+      "return_list": false,
+      "image": [
+        "3",
+        0
+      ],
+      "mask": [
+        "2",
+        1
+      ]
+    },
+    "class_type": "Bounded Image Crop with Mask",
+    "_meta": {
+      "title": "Bounded Image Crop with Mask"
+    }
+  }
+}
