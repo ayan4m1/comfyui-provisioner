@@ -20,7 +20,9 @@ NODES=(
     "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite"
 )
 
-WORKFLOWS=()
+WORKFLOWS=(
+    "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/wan-img2vid.json"
+)
 
 CLIP_MODELS=()
 

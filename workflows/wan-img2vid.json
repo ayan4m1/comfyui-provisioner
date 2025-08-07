@@ -1,0 +1,283 @@
+{
+  "3": {
+    "inputs": {
+      "seed": 578955347293256,
+      "steps": 20,
+      "cfg": 6,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "normal",
+      "denoise": 1,
+      "model": [
+        "54",
+        0
+      ],
+      "positive": [
+        "50",
+        0
+      ],
+      "negative": [
+        "50",
+        1
+      ],
+      "latent_image": [
+        "50",
+        2
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "Sampler"
+    }
+  },
+  "6": {
+    "inputs": {
+      "text": "The woman looks directly into the camera and winks",
+      "clip": [
+        "38",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Prompt"
+    }
+  },
+  "7": {
+    "inputs": {
+      "text": "watermark, text, vignette, camera movement",
+      "clip": [
+        "38",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Negative Prompt"
+    }
+  },
+  "8": {
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "39",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "38": {
+    "inputs": {
+      "clip_name": "t5xxl_um_fp8_e4m3fn_scaled.safetensors",
+      "type": "wan",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "Load CLIP"
+    }
+  },
+  "39": {
+    "inputs": {
+      "vae_name": "wan_2.1_vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "47": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "codec": "av1",
+      "fps": [
+        "65",
+        1
+      ],
+      "crf": 32,
+      "images": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "SaveWEBM",
+    "_meta": {
+      "title": "SaveWEBM"
+    }
+  },
+  "49": {
+    "inputs": {
+      "clip_name": "clip_vision_h.safetensors"
+    },
+    "class_type": "CLIPVisionLoader",
+    "_meta": {
+      "title": "Load CLIP Vision"
+    }
+  },
+  "50": {
+    "inputs": {
+      "width": [
+        "57",
+        2
+      ],
+      "height": [
+        "57",
+        3
+      ],
+      "length": [
+        "62",
+        2
+      ],
+      "batch_size": 1,
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "vae": [
+        "39",
+        0
+      ],
+      "clip_vision_output": [
+        "51",
+        0
+      ],
+      "start_image": [
+        "57",
+        0
+      ]
+    },
+    "class_type": "WanImageToVideo",
+    "_meta": {
+      "title": "WAN I2V"
+    }
+  },
+  "51": {
+    "inputs": {
+      "crop": "none",
+      "clip_vision": [
+        "49",
+        0
+      ],
+      "image": [
+        "57",
+        0
+      ]
+    },
+    "class_type": "CLIPVisionEncode",
+    "_meta": {
+      "title": "CLIP Vision Encode"
+    }
+  },
+  "54": {
+    "inputs": {
+      "shift": 8.000000000000002,
+      "model": [
+        "55",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingSD3",
+    "_meta": {
+      "title": "SD3 Model Sampling"
+    }
+  },
+  "55": {
+    "inputs": {
+      "unet_name": "wan2.1-i2v-14b-480p-Q4_0.gguf"
+    },
+    "class_type": "UnetLoaderGGUF",
+    "_meta": {
+      "title": "Load Unet"
+    }
+  },
+  "57": {
+    "inputs": {
+      "image": "pony_00069_.png",
+      "resize": true,
+      "width": 352,
+      "height": 480,
+      "repeat": 1,
+      "keep_proportion": true,
+      "divisible_by": 8,
+      "mask_channel": "alpha",
+      "background_color": ""
+    },
+    "class_type": "LoadAndResizeImage",
+    "_meta": {
+      "title": "Load & Resize Image"
+    }
+  },
+  "61": {
+    "inputs": {
+      "number_type": "float",
+      "number": 6.000000000000001
+    },
+    "class_type": "Constant Number",
+    "_meta": {
+      "title": "Video Length"
+    }
+  },
+  "62": {
+    "inputs": {
+      "operation": "multiplication",
+      "number_a": [
+        "61",
+        0
+      ],
+      "number_b": [
+        "65",
+        0
+      ]
+    },
+    "class_type": "Number Operation",
+    "_meta": {
+      "title": "Calculate Frame Count"
+    }
+  },
+  "63": {
+    "inputs": {
+      "number_type": "integer",
+      "number": 24.000000000000004
+    },
+    "class_type": "Constant Number",
+    "_meta": {
+      "title": "Desired Framerate"
+    }
+  },
+  "64": {
+    "inputs": {
+      "number_type": "float",
+      "number": 4.000000000000001
+    },
+    "class_type": "Constant Number",
+    "_meta": {
+      "title": "RIFE Interpolation"
+    }
+  },
+  "65": {
+    "inputs": {
+      "operation": "division",
+      "number_a": [
+        "63",
+        0
+      ],
+      "number_b": [
+        "64",
+        0
+      ]
+    },
+    "class_type": "Number Operation",
+    "_meta": {
+      "title": "Calculate Frame Rate"
+    }
+  }
+}
