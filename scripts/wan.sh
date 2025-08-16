@@ -21,14 +21,12 @@ NODES=(
 )
 
 WORKFLOWS=(
-    "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/wan-img2vid.json"
+    "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/wan2.2-img2vid.json"
 )
 
 CLIP_MODELS=()
 
-CLIP_VISION_MODELS=(
-    "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors"
-)
+CLIP_VISION_MODELS=()
 
 CHECKPOINT_MODELS=()
 
@@ -37,7 +35,8 @@ UNET_MODELS=()
 LORA_MODELS=()
 
 VAE_MODELS=(
-    "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors"
+    # "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors"
+    "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan2.2_vae.safetensors"
 )
 
 ESRGAN_MODELS=(
@@ -50,11 +49,14 @@ ESRGAN_MODELS=(
 CONTROLNET_MODELS=()
 
 TEXT_ENCODER_MODELS=(
-    "https://huggingface.co/calcuis/wan-gguf/resolve/main/t5xxl_um_fp8_e4m3fn_scaled.safetensors"
+    # "https://huggingface.co/calcuis/wan-gguf/resolve/main/t5xxl_um_fp8_e4m3fn_scaled.safetensors"
+    "https://huggingface.co/city96/umt5-xxl-encoder-gguf/resolve/main/umt5-xxl-encoder-Q5_K_M.gguf"
+
 )
 
 DIFFUSION_MODELS=(
-    "https://huggingface.co/city96/Wan2.1-I2V-14B-480P-gguf/resolve/main/wan2.1-i2v-14b-480p-Q5_K_M.gguf"
+    # "https://huggingface.co/city96/Wan2.1-I2V-14B-480P-gguf/resolve/main/wan2.1-i2v-14b-480p-Q5_K_M.gguf"
+    "https://huggingface.co/QuantStack/Wan2.2-TI2V-5B-GGUF/resolve/main/Wan2.2-TI2V-5B-Q5_K_M.gguf"
 )
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
