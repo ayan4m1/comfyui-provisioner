@@ -36,7 +36,6 @@
       "https://civitai.com/api/download/models/220405?type=Model&format=SafeTensor"
     ],
     "nodes": [
-      "https://github.com/city96/ComfyUI-GGUF",
       "https://github.com/liusida/ComfyUI-Login",
       "https://github.com/kijai/ComfyUI-KJNodes",
       "https://github.com/ltdrdata/ComfyUI-Manager",
