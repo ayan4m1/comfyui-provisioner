@@ -1,0 +1,11 @@
+{
+  "name": "Utility Node Pack",
+  "templates": ["ComfyUI"],
+  "nodes": [
+    "https://github.com/kijai/ComfyUI-KJNodes",
+    "https://github.com/ltdrdata/ComfyUI-Manager",
+    "https://github.com/ltdrdata/was-node-suite-comfyui",
+    "https://github.com/ZHO-ZHO-ZHO/ComfyUI-BRIA_AI-RMBG",
+    "https://github.com/Fannovel16/comfyui_controlnet_aux"
+  ]
+}

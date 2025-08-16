@@ -4,7 +4,7 @@ import { filesize } from 'filesize';
 import { sprintf } from 'sprintf-js';
 import { readdir, readFile } from 'fs/promises';
 import { ExitPromptError } from '@inquirer/core';
-import { confirm, select } from '@inquirer/prompts';
+import { checkbox, confirm, select } from '@inquirer/prompts';
 // eslint-disable-next-line import-x/no-unresolved
 import packageJsonModule from '@npmcli/package-json';
 import type { PackageJson } from '@npmcli/package-json';
@@ -14,12 +14,16 @@ import { formatDistanceToNow, fromUnixTime } from 'date-fns';
 
 import {
   CreateInstanceResponse,
+  Module,
   Offer,
   Offers,
+  ModuleDependency,
   ProvisionOptions,
   RunType,
-  Template
+  Template,
+  ModuleDependencies
 } from './types.js';
+import uniq from 'lodash.uniq';
 
 const pastebinApiUrl = 'https://pastebin.com/api/api_post.php';
 const baseApiUrl = 'https://console.vast.ai/api/v0';
@@ -50,7 +54,7 @@ const chooseTemplate = async (options: ProvisionOptions) => {
         )
       );
       const chosenTemplate = await select<string>({
-        message: 'Please choose a template to deploy',
+        message: 'Please choose a template to deploy.',
         choices: templatePaths.map((path, index) => {
           const contents = JSON.parse(
             templateFiles[index]
@@ -77,6 +81,38 @@ const chooseTemplate = async (options: ProvisionOptions) => {
     return JSON.parse(
       await readFile(templatePath, 'utf-8')
     ) as unknown as Template;
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+};
+
+const chooseModules = async (template: Template) => {
+  try {
+    const baseModulePath = join(getPackageJsonPath(), 'modules');
+    const modulePaths = await readdir(baseModulePath);
+    const moduleFiles = await Promise.all(
+      modulePaths.map((path) => readFile(join(baseModulePath, path), 'utf-8'))
+    );
+    const chosenModules = await checkbox<Module>({
+      message: 'Please choose the modules you would like to include.',
+      choices: modulePaths.flatMap((_, index) => {
+        const contents = JSON.parse(moduleFiles[index]) as unknown as Module;
+
+        if (!contents.templates.includes(template.name)) {
+          return [];
+        }
+
+        return [
+          {
+            name: contents.name,
+            value: contents
+          }
+        ];
+      })
+    });
+
+    return chosenModules;
   } catch (error) {
     console.error(error);
     process.exit(1);
@@ -119,7 +155,7 @@ const getOffers = async (options: ProvisionOptions) => {
   }
 };
 
-const getScriptUrl = async (template: Template) => {
+const getScriptUrl = async (template: Template, modules: Module[]) => {
   try {
     const scriptPath = join(getPackageJsonPath(), 'scripts', template.script);
     if (!existsSync(scriptPath)) {
@@ -128,7 +164,19 @@ const getScriptUrl = async (template: Template) => {
 
     let script = await readFile(scriptPath, 'utf-8');
 
-    if (template.provision) {
+    if (modules.length) {
+      // add all module deps together and then deduplicate
+      const sumModule: ModuleDependencies = Object.fromEntries(
+        Object.entries(ModuleDependency).map(([, val]) => [val as string, []])
+      );
+
+      for (const module of modules) {
+        for (const key of Object.values(ModuleDependency)) {
+          sumModule[key] = uniq([...sumModule[key], ...(module[key] ?? [])]);
+        }
+      }
+
+      // substitute lists into Bash script
       const {
         apt_packages,
         pip_packages,
@@ -144,7 +192,7 @@ const getScriptUrl = async (template: Template) => {
         controlnet_models,
         text_encoder_models,
         diffusion_models
-      } = template.provision;
+      } = sumModule;
 
       script = script
         .replace('{{ APT_PACKAGES }}', formatBashArray(apt_packages))
@@ -215,6 +263,7 @@ const formatChoices = (options: ProvisionOptions, offers: Offer[]) =>
 export const provision = async (options: ProvisionOptions): Promise<void> => {
   try {
     const templateInfo = await chooseTemplate(options);
+    const modules = await chooseModules(templateInfo);
     const offers = await getOffers(options);
 
     const choice = await select<number>({
@@ -237,16 +286,17 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
       return console.log('Exiting because user declined to deploy.');
     }
 
-    console.log(
-      `Deploying ${templateInfo.name} (template ${templateInfo.hash}) to instance ${choice}...`
-    );
+    console.log(`Deploying ${templateInfo.name} to instance ${choice}...`);
 
     const environmentVars: Record<string, string> = {
       ...templateInfo.environment
     };
 
     if (templateInfo.script) {
-      environmentVars.PROVISIONER_SCRIPT = await getScriptUrl(templateInfo);
+      environmentVars.PROVISIONER_SCRIPT = await getScriptUrl(
+        templateInfo,
+        modules
+      );
     }
 
     const request: Record<string, unknown> = {

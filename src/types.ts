@@ -19,7 +19,7 @@ export type Offers = {
   offers: Offer[];
 };
 
-export enum ProvisionKey {
+export enum ModuleDependency {
   AptPackages = 'apt_packages',
   PipPackages = 'pip_packages',
   Nodes = 'nodes',
@@ -42,12 +42,18 @@ export enum RunType {
   Args = 'args'
 }
 
+export type ModuleDependencies = Partial<Record<ModuleDependency, string[]>>;
+
+export type Module = {
+  name: string;
+  templates: string[];
+} & ModuleDependencies;
+
 export type Template = {
   description?: string;
   environment?: Record<string, string>;
   hash?: string;
   name: string;
-  provision?: Partial<Record<ProvisionKey, string[]>>;
   runType?: RunType;
   script?: string;
   size: number;

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/module.schema.json",
+  "name": "Flux 1.D",
+  "templates": ["ComfyUI"],
+  "clip_models": [
+    "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors"
+  ],
+  "controlnet_models": [
+    "https://huggingface.co/XLabs-AI/flux-ip-adapter/resolve/main/ip_adapter.safetensors"
+  ],
+  "diffusion_models": [
+    "https://huggingface.co/Kijai/flux-fp8/resolve/main/flux1-dev-fp8-e4m3fn.safetensors"
+  ],
+  "text_encoder_models": [
+    "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn.safetensors"
+  ],
+  "vae_models": [
+    "https://huggingface.co/ffxvs/vae-flux/resolve/main/ae.safetensors"
+  ],
+  "workflows": [
+    "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/flux-txt2img.json"
+  ]
+}

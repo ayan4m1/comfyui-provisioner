@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/module.schema.json",
+  "name": "Pixel Art Resources",
+  "templates": ["ComfyUI"],
+  "checkpoint_models": [
+    "https://huggingface.co/AIWorksMD/pixelArtDiffusionXL/resolve/main/pixelArtDiffusionXL_spriteShaper.safetensors"
+  ],
+  "lora_models": [
+    "https://civitai.com/api/download/models/135931?type=Model&format=SafeTensor"
+  ]
+}

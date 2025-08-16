@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/module.schema.json",
+  "name": "WAN2.2",
+  "templates": ["ComfyUI"],
+  "nodes": ["https://github.com/city96/ComfyUI-GGUF"],
+  "workflows": [
+    "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/wan2.2-img2vid.json"
+  ],
+  "vae_models": [
+    "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan2.2_vae.safetensors"
+  ],
+  "text_encoder_models": [
+    "https://huggingface.co/city96/umt5-xxl-encoder-gguf/resolve/main/umt5-xxl-encoder-Q5_K_M.gguf"
+  ],
+  "diffusion_models": [
+    "https://huggingface.co/QuantStack/Wan2.2-TI2V-5B-GGUF/resolve/main/Wan2.2-TI2V-5B-Q5_K_M.gguf"
+  ]
+}

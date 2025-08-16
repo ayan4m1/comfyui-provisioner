@@ -1056,6 +1056,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash.uniq@npm:^4":
+  version: 4.5.9
+  resolution: "@types/lodash.uniq@npm:4.5.9"
+  dependencies:
+    "@types/lodash": "npm:*"
+  checksum: 10c0/feb01dfd7b6e3d2b4d29bdb0d00cce8ffa685f1c219b34ae531f098811faab11696b7bdfc3654edcf65f6180ad0cda6471cec7da8a9e7688f294b5c8177cfea7
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*":
+  version: 4.17.20
+  resolution: "@types/lodash@npm:4.17.20"
+  checksum: 10c0/98cdd0faae22cbb8079a01a3bb65aa8f8c41143367486c1cbf5adc83f16c9272a2a5d2c1f541f61d0d73da543c16ee1d21cf2ef86cb93cd0cc0ac3bced6dd88f
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*":
   version: 24.0.13
   resolution: "@types/node@npm:24.0.13"
@@ -1780,6 +1796,7 @@ __metadata:
     "@rollup/plugin-terser": "npm:^0.4.4"
     "@rollup/plugin-typescript": "npm:^12.1.4"
     "@types/eslint__js": "npm:^8.42.3"
+    "@types/lodash.uniq": "npm:^4"
     "@types/node": "npm:24.0.10"
     "@types/npmcli__package-json": "npm:^4.0.4"
     "@types/sprintf-js": "npm:^1"
@@ -1798,6 +1815,7 @@ __metadata:
     husky: "npm:^9.1.7"
     inquirer: "npm:9"
     lint-staged: "npm:^16.1.2"
+    lodash.uniq: "npm:^4.5.0"
     prettier: "npm:^3.6.2"
     rollup: "npm:^4.44.2"
     rollup-plugin-auto-external: "npm:^2.0.0"
