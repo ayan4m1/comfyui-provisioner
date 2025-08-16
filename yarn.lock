@@ -1023,6 +1023,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/d3-color@npm:*":
+  version: 3.1.3
+  resolution: "@types/d3-color@npm:3.1.3"
+  checksum: 10c0/65eb0487de606eb5ad81735a9a5b3142d30bc5ea801ed9b14b77cb14c9b909f718c059f13af341264ee189acf171508053342142bdf99338667cea26a2d8d6ae
+  languageName: node
+  linkType: hard
+
+"@types/d3-interpolate@npm:^3":
+  version: 3.0.4
+  resolution: "@types/d3-interpolate@npm:3.0.4"
+  dependencies:
+    "@types/d3-color": "npm:*"
+  checksum: 10c0/066ebb8da570b518dd332df6b12ae3b1eaa0a7f4f0c702e3c57f812cf529cc3500ec2aac8dc094f31897790346c6b1ebd8cd7a077176727f4860c2b181a65ca4
+  languageName: node
+  linkType: hard
+
 "@types/eslint@npm:*":
   version: 9.6.1
   resolution: "@types/eslint@npm:9.6.1"
@@ -1795,6 +1811,7 @@ __metadata:
     "@npmcli/package-json": "npm:^6.2.0"
     "@rollup/plugin-terser": "npm:^0.4.4"
     "@rollup/plugin-typescript": "npm:^12.1.4"
+    "@types/d3-interpolate": "npm:^3"
     "@types/eslint__js": "npm:^8.42.3"
     "@types/lodash.uniq": "npm:^4"
     "@types/node": "npm:24.0.10"
@@ -1804,6 +1821,7 @@ __metadata:
     commander: "npm:^14.0.0"
     commitizen: "npm:^4.3.1"
     commitlint: "npm:^19.8.1"
+    d3-interpolate: "npm:^3.0.1"
     date-fns: "npm:^4.1.0"
     dotenv: "npm:^17.2.0"
     eslint: "npm:^9.30.1"
@@ -1997,6 +2015,22 @@ __metadata:
     "@commitlint/load":
       optional: true
   checksum: 10c0/895d64bb60b7014ec98fdbc211b454e3a1d585b10a818a4a3cf4c0f4b8576712d2daf4f8eb670e6c68e10bbb72ed73ab73b1a9e4673be41405591454e5bf5734
+  languageName: node
+  linkType: hard
+
+"d3-color@npm:1 - 3":
+  version: 3.1.0
+  resolution: "d3-color@npm:3.1.0"
+  checksum: 10c0/a4e20e1115fa696fce041fbe13fbc80dc4c19150fa72027a7c128ade980bc0eeeba4bcf28c9e21f0bce0e0dbfe7ca5869ef67746541dcfda053e4802ad19783c
+  languageName: node
+  linkType: hard
+
+"d3-interpolate@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "d3-interpolate@npm:3.0.1"
+  dependencies:
+    d3-color: "npm:1 - 3"
+  checksum: 10c0/19f4b4daa8d733906671afff7767c19488f51a43d251f8b7f484d5d3cfc36c663f0a66c38fe91eee30f40327443d799be17169f55a293a3ba949e84e57a33e6a
   languageName: node
   linkType: hard
 

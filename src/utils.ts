@@ -2,15 +2,13 @@ import { existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { filesize } from 'filesize';
 import { sprintf } from 'sprintf-js';
+import { dirname, join, resolve } from 'path';
 import { readdir, readFile } from 'fs/promises';
 import { ExitPromptError } from '@inquirer/core';
-import { checkbox, confirm, select } from '@inquirer/prompts';
-// eslint-disable-next-line import-x/no-unresolved
 import packageJsonModule from '@npmcli/package-json';
 import type { PackageJson } from '@npmcli/package-json';
-import { dirname, join, resolve } from 'path';
-// eslint-disable-next-line import-x/no-unresolved
 import { formatDistanceToNow, fromUnixTime } from 'date-fns';
+import { checkbox, confirm, select } from '@inquirer/prompts';
 
 import {
   CreateInstanceResponse,
@@ -24,6 +22,8 @@ import {
   ModuleDependencies
 } from './types.js';
 import uniq from 'lodash.uniq';
+import chalk from 'chalk';
+import { interpolateRgb } from 'd3-interpolate';
 
 const pastebinApiUrl = 'https://pastebin.com/api/api_post.php';
 const baseApiUrl = 'https://console.vast.ai/api/v0';
@@ -240,25 +240,52 @@ const getScriptUrl = async (template: Template, modules: Module[]) => {
   }
 };
 
-const formatChoices = (options: ProvisionOptions, offers: Offer[]) =>
-  offers
+const formatOffers = (options: ProvisionOptions, offers: Offer[]) => {
+  const minPrice = offers.reduce(
+    (prev, curr) =>
+      prev < curr.search.totalHour ? prev : curr.search.totalHour,
+    100
+  );
+  const maxPrice = offers.reduce(
+    (prev, curr) =>
+      prev > curr.search.totalHour ? prev : curr.search.totalHour,
+    0
+  );
+
+  return offers
     .filter((offer) => !rtx5000Regex.test(offer.gpu_name))
     .filter((offer) => offer.search.totalHour <= options.maxHourlyCost)
-    .map((offer) => ({
-      name: sprintf(
-        '%-16s %-12s %s %8s %s',
-        offer.geolocation,
-        offer.gpu_name,
-        filesize(offer.gpu_ram * 1e6, {
-          exponent: 3,
-          round: 0,
-          roundingMethod: 'floor'
-        }), // convert GB to bytes, then format as rounded GB
-        `${Math.floor(offer.inet_down)} Mbps`,
-        `$${offer.search.totalHour.toFixed(3)}/hr`
-      ),
-      value: offer.id
-    }));
+    .map((offer) => {
+      // convert GB to bytes, then format as rounded GB
+      const vramGb = filesize(offer.gpu_ram * 1e6, {
+        exponent: 3,
+        round: 0,
+        roundingMethod: 'floor'
+      });
+      // interpolate relative cost from cheapest to most expensive
+      const costRgb = interpolateRgb(
+        '#00ff00',
+        '#ff0000'
+      )((offer.search.totalHour - minPrice) / (maxPrice - minPrice))
+        .replace('rgb(', '')
+        .replace(')', '')
+        .split(',')
+        .map((val) => parseInt(val, 10));
+      const costHex = `#${((1 << 24) + (costRgb[0] << 16) + (costRgb[1] << 8) + costRgb[2]).toString(16).slice(1)}`;
+
+      return {
+        name: sprintf(
+          '%-16s %-12s %s %8s %s',
+          offer.geolocation,
+          offer.gpu_name,
+          vramGb,
+          `${Math.floor(offer.inet_down)} Mbps`,
+          chalk.hex(costHex)(`$${offer.search.totalHour.toFixed(3)}/hr`)
+        ),
+        value: offer.id
+      };
+    });
+};
 
 export const provision = async (options: ProvisionOptions): Promise<void> => {
   try {
@@ -268,7 +295,7 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
 
     const choice = await select<number>({
       message: 'Choose the instance you would like to request.',
-      choices: formatChoices(options, offers),
+      choices: formatOffers(options, offers),
       loop: false
     });
     const chosen = offers.find((offer) => offer.id === choice);
