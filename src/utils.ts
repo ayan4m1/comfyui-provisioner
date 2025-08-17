@@ -276,12 +276,12 @@ const formatOffers = (options: ProvisionOptions, offers: Offer[]) => {
 
       return {
         name: sprintf(
-          '%-16s %-12s %s %8s %s',
-          offer.geolocation,
-          offer.gpu_name,
+          '%-6s %-12s %-16s %8s %s',
           vramGb,
+          offer.gpu_name,
+          offer.geolocation,
           `${Math.floor(offer.inet_down)} Mbps`,
-          chalk.hex(costHex)(`$${offer.search.totalHour.toFixed(3)}/hr`)
+          chalk.bgHex(costHex)(`$${offer.search.totalHour.toFixed(3)}/hr`)
         ),
         value: offer.id
       };
