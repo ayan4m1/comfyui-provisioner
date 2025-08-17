@@ -95,6 +95,7 @@ const chooseModules = async (template: Template) => {
       modulePaths.map((path) => readFile(join(baseModulePath, path), 'utf-8'))
     );
     const chosenModules = await checkbox<Module>({
+      loop: false,
       message: 'Please choose the modules you would like to include.',
       choices: modulePaths.flatMap((_, index) => {
         const contents = JSON.parse(moduleFiles[index]) as unknown as Module;
