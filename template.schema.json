@@ -48,7 +48,7 @@
       "type": "string"
     }
   },
-  "required": ["name", "hash", "size"],
+  "required": ["name", "size"],
   "oneOf": [
     {
       "required": ["hash"]
