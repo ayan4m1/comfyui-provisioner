@@ -15,7 +15,6 @@ import {
   Module,
   Offer,
   Offers,
-  ModuleDependency,
   ProvisionOptions,
   RunType,
   Template,
@@ -102,7 +101,7 @@ const chooseModules = async (template: Template) => {
     const moduleMap = await parseJsonInDir<Module>(baseModulePath);
     const moduleChoices = Array.from(
       moduleMap.entries().flatMap(([, module]) => {
-        if (!module.templates.includes(template.name)) {
+        if (module.template !== template.name) {
           return [];
         }
 
@@ -177,57 +176,31 @@ const getScriptUrl = async (template: Template, modules: Module[]) => {
 
     let script = await readFile(scriptPath, 'utf-8');
 
-    if (modules.length) {
+    if (template.file_types.length && modules.length) {
       // add all module deps together and then deduplicate
       const sumModule: ModuleDependencies = Object.fromEntries(
-        Object.entries(ModuleDependency).map(([, val]) => [val as string, []])
+        template.file_types.map((val) => [val, []])
       );
 
       for (const module of modules) {
-        for (const key of Object.values(ModuleDependency)) {
-          sumModule[key] = uniq([...sumModule[key], ...(module[key] ?? [])]);
+        for (const key of template.file_types) {
+          sumModule[key] = uniq([
+            ...sumModule[key],
+            ...(module.files[key] ?? [])
+          ]);
         }
       }
 
-      // substitute lists into Bash script
-      const {
-        apt_packages,
-        pip_packages,
-        nodes,
-        workflows,
-        clip_models,
-        clip_vision_models,
-        checkpoint_models,
-        unet_models,
-        lora_models,
-        vae_models,
-        esrgan_models,
-        controlnet_models,
-        text_encoder_models,
-        diffusion_models
-      } = sumModule;
+      for (const key of template.file_types) {
+        if (!sumModule[key].length) {
+          continue;
+        }
 
-      script = script
-        .replace('{{ APT_PACKAGES }}', formatBashArray(apt_packages))
-        .replace('{{ PIP_PACKAGES }}', formatBashArray(pip_packages))
-        .replace('{{ NODES }}', formatBashArray(nodes))
-        .replace('{{ WORKFLOWS }}', formatBashArray(workflows))
-        .replace('{{ CLIP_MODELS }}', formatBashArray(clip_models))
-        .replace(
-          '{{ CLIP_VISION_MODELS }}',
-          formatBashArray(clip_vision_models)
-        )
-        .replace('{{ CHECKPOINT_MODELS }}', formatBashArray(checkpoint_models))
-        .replace('{{ UNET_MODELS }}', formatBashArray(unet_models))
-        .replace('{{ LORA_MODELS }}', formatBashArray(lora_models))
-        .replace('{{ VAE_MODELS }}', formatBashArray(vae_models))
-        .replace('{{ ESRGAN_MODELS }}', formatBashArray(esrgan_models))
-        .replace('{{ CONTROLNET_MODELS }}', formatBashArray(controlnet_models))
-        .replace(
-          '{{ TEXT_ENCODER_MODELS }}',
-          formatBashArray(text_encoder_models)
-        )
-        .replace('{{ DIFFUSION_MODELS }}', formatBashArray(diffusion_models));
+        script = script.replace(
+          `{{ ${key.toUpperCase()} }}`,
+          formatBashArray(sumModule[key])
+        );
+      }
     }
 
     const postData = new FormData();

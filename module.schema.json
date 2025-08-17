@@ -3,74 +3,35 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Module",
   "type": "object",
-  "description": "A set of resources for ComfyUI",
+  "description": "A set of resources for a template",
   "properties": {
     "name": {
       "description": "The short name for the module",
       "type": "string",
       "exclusiveMinimum": 0
     },
-    "templates": {
-      "description": "List of template which can use this module",
-      "type": "array",
+    "description": {
+      "description": "The long description for the module",
+      "type": "string"
+    },
+    "template": {
+      "description": "The template that this module is meant for",
+      "type": "string",
       "exclusiveMinimum": 0
     },
-    "apt_packages": {
-      "description": "List of system packages to install",
-      "type": "array"
-    },
-    "checkpoint_models": {
-      "description": "List of checkpoints to install",
-      "type": "array"
-    },
-    "clip_models": {
-      "description": "List of CLIP models to install",
-      "type": "array"
-    },
-    "clip_vision_models": {
-      "description": "List of CLIP vision models to install",
-      "type": "array"
-    },
-    "controlnet_models": {
-      "description": "List of ControlNet models to install",
-      "type": "array"
-    },
-    "diffusion_models": {
-      "description": "List of diffusion models to install",
-      "type": "array"
-    },
-    "esrgan_models": {
-      "description": "List of ESRGAN upscaler models to install",
-      "type": "array"
-    },
-    "lora_models": {
-      "description": "List of LoRAs to install",
-      "type": "array"
-    },
-    "nodes": {
-      "description": "List of ComfyUI node repos to install",
-      "type": "array"
-    },
-    "pip_packages": {
-      "description": "List of pip packages to install",
-      "type": "array"
-    },
-    "text_encoder_models": {
-      "description": "List of text encoder models to install",
-      "type": "array"
-    },
-    "unet_models": {
-      "description": "List of UNet models to install",
-      "type": "array"
-    },
-    "vae_models": {
-      "description": "List of VAE models to install",
-      "type": "array"
-    },
-    "workflows": {
-      "description": "List of ComfyUI workflows to install",
-      "type": "array"
+    "files": {
+      "description": "An object with lists of URLs for type of file exposed by the template",
+      "type": "object",
+      "exclusiveMinimum": 0,
+      "patternProperties": {
+        "^[a-z0-9_]+$": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
-  "required": ["name", "templates"]
+  "required": ["name", "template", "files"]
 }

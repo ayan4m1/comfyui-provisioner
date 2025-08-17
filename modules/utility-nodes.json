@@ -1,11 +1,14 @@
 {
+  "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/module.schema.json",
   "name": "Utility Node Pack",
-  "templates": ["ComfyUI"],
-  "nodes": [
-    "https://github.com/kijai/ComfyUI-KJNodes",
-    "https://github.com/ltdrdata/ComfyUI-Manager",
-    "https://github.com/ltdrdata/was-node-suite-comfyui",
-    "https://github.com/ZHO-ZHO-ZHO/ComfyUI-BRIA_AI-RMBG",
-    "https://github.com/Fannovel16/comfyui_controlnet_aux"
-  ]
+  "template": "ComfyUI",
+  "files": {
+    "nodes": [
+      "https://github.com/kijai/ComfyUI-KJNodes",
+      "https://github.com/ltdrdata/ComfyUI-Manager",
+      "https://github.com/ltdrdata/was-node-suite-comfyui",
+      "https://github.com/ZHO-ZHO-ZHO/ComfyUI-BRIA_AI-RMBG",
+      "https://github.com/Fannovel16/comfyui_controlnet_aux"
+    ]
+  }
 }

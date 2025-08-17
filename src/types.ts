@@ -19,39 +19,25 @@ export type Offers = {
   offers: Offer[];
 };
 
-export enum ModuleDependency {
-  AptPackages = 'apt_packages',
-  PipPackages = 'pip_packages',
-  Nodes = 'nodes',
-  Workflows = 'workflows',
-  ClipModels = 'clip_models',
-  ClipVisionModels = 'clip_vision_models',
-  CheckpointModels = 'checkpoint_models',
-  UnetModels = 'unet_models',
-  LoraModels = 'lora_models',
-  VaeModels = 'vae_models',
-  EsrganModels = 'esrgan_models',
-  ControlNetModels = 'controlnet_models',
-  TextEncoderModels = 'text_encoder_models',
-  DiffusionModels = 'diffusion_models'
-}
-
 export enum RunType {
   SSH = 'ssh',
   Jupyter = 'jupyter',
   Args = 'args'
 }
 
-export type ModuleDependencies = Partial<Record<ModuleDependency, string[]>>;
+export type ModuleDependencies = Partial<Record<string, string[]>>;
 
 export type Module = {
+  description: string;
+  files: ModuleDependencies;
   name: string;
-  templates: string[];
-} & ModuleDependencies;
+  template: string;
+};
 
 export type Template = {
   description?: string;
   environment?: Record<string, string>;
+  file_types: string[];
   hash?: string;
   name: string;
   runType?: RunType;

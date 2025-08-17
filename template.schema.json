@@ -17,6 +17,13 @@
       "description": "The Vast.ai template hash to use for deployment",
       "type": "string"
     },
+    "file_types": {
+      "description": "A list of keys to define extra files to download during provisioning",
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
     "name": {
       "description": "The short name for the template",
       "exclusiveMinimum": 0,
@@ -24,8 +31,8 @@
     },
     "runType": {
       "description": "The mode to run the Vast.ai instance with",
-      "type": "string",
-      "enum": ["ssh", "jupyter", "args"]
+      "enum": ["ssh", "jupyter", "args"],
+      "type": "string"
     },
     "script": {
       "description": "A provisioning script to run",
