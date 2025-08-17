@@ -272,7 +272,7 @@ const formatOffers = (options: ProvisionOptions, offers: Offer[]) => {
         .replace(')', '')
         .split(',')
         .map((val) => parseInt(val, 10));
-      const costHex = `#${((costRgb[0] << 16) + (costRgb[1] << 8) + costRgb[2]).toString(16)}`;
+      const costHex = `#${((1 << 24) + (costRgb[0] << 16) + (costRgb[1] << 8) + costRgb[2]).toString(16).slice(1)}`;
 
       return {
         name: sprintf(
