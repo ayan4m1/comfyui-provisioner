@@ -40,6 +40,24 @@ const formatBashArray = (items: string[]) =>
 export const getPackageInfo = async (): Promise<PackageJson> =>
   (await packageJsonModule.load(getPackageJsonPath()))?.content;
 
+const parseJsonInDir = async <T>(basePath: string): Promise<Map<string, T>> => {
+  const result = new Map<string, T>();
+
+  const paths = await readdir(basePath);
+  const contents = await Promise.all(
+    paths.map((path) => readFile(join(basePath, path), 'utf-8'))
+  );
+  const objects = contents.map(
+    (content) => JSON.parse(content) as unknown as T
+  );
+
+  for (let i = 0; i < paths.length; i++) {
+    result.set(paths[i], objects[i]);
+  }
+
+  return result;
+};
+
 const chooseTemplate = async (options: ProvisionOptions) => {
   try {
     const baseTemplatePath = join(getPackageJsonPath(), 'templates');
@@ -47,26 +65,17 @@ const chooseTemplate = async (options: ProvisionOptions) => {
     let templatePath: string;
 
     if (!options.template) {
-      const templatePaths = await readdir(baseTemplatePath);
-      const templateFiles = await Promise.all(
-        templatePaths.map((path) =>
-          readFile(join(baseTemplatePath, path), 'utf-8')
-        )
-      );
+      const templateMap = await parseJsonInDir<Template>(baseTemplatePath);
       const chosenTemplate = await select<string>({
         message: 'Please choose a template to deploy.',
-        choices: templatePaths.map((path, index) => {
-          const contents = JSON.parse(
-            templateFiles[index]
-          ) as unknown as Template;
-
-          return {
+        choices: Array.from(
+          templateMap.entries().map(([path, contents]) => ({
             name: contents.description
               ? `${contents.name} - ${contents.description}`
               : contents.name,
             value: path
-          };
-        })
+          }))
+        )
       });
 
       templatePath = join(baseTemplatePath, chosenTemplate);
@@ -90,24 +99,21 @@ const chooseTemplate = async (options: ProvisionOptions) => {
 const chooseModules = async (template: Template) => {
   try {
     const baseModulePath = join(getPackageJsonPath(), 'modules');
-    const modulePaths = await readdir(baseModulePath);
-    const moduleFiles = await Promise.all(
-      modulePaths.map((path) => readFile(join(baseModulePath, path), 'utf-8'))
-    );
-    const moduleChoices = modulePaths.flatMap((_, index) => {
-      const contents = JSON.parse(moduleFiles[index]) as unknown as Module;
-
-      if (!contents.templates.includes(template.name)) {
-        return [];
-      }
-
-      return [
-        {
-          name: contents.name,
-          value: contents
+    const moduleMap = await parseJsonInDir<Module>(baseModulePath);
+    const moduleChoices = Array.from(
+      moduleMap.entries().flatMap(([, module]) => {
+        if (!module.templates.includes(template.name)) {
+          return [];
         }
-      ];
-    });
+
+        return [
+          {
+            name: module.name,
+            value: module
+          }
+        ];
+      })
+    );
 
     if (!moduleChoices.length) {
       return [];
