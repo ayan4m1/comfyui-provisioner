@@ -94,23 +94,29 @@ const chooseModules = async (template: Template) => {
     const moduleFiles = await Promise.all(
       modulePaths.map((path) => readFile(join(baseModulePath, path), 'utf-8'))
     );
+    const moduleChoices = modulePaths.flatMap((_, index) => {
+      const contents = JSON.parse(moduleFiles[index]) as unknown as Module;
+
+      if (!contents.templates.includes(template.name)) {
+        return [];
+      }
+
+      return [
+        {
+          name: contents.name,
+          value: contents
+        }
+      ];
+    });
+
+    if (!moduleChoices.length) {
+      return [];
+    }
+
     const chosenModules = await checkbox<Module>({
       loop: false,
       message: 'Please choose the modules you would like to include.',
-      choices: modulePaths.flatMap((_, index) => {
-        const contents = JSON.parse(moduleFiles[index]) as unknown as Module;
-
-        if (!contents.templates.includes(template.name)) {
-          return [];
-        }
-
-        return [
-          {
-            name: contents.name,
-            value: contents
-          }
-        ];
-      })
+      choices: moduleChoices
     });
 
     return chosenModules;
