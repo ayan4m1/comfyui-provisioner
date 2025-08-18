@@ -37,7 +37,7 @@ export type Module = {
 export type Template = {
   description?: string;
   environment?: Record<string, string>;
-  file_types: string[];
+  fileTypes: string[];
   hash?: string;
   name: string;
   runType?: RunType;

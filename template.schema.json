@@ -17,7 +17,7 @@
       "description": "The Vast.ai template hash to use for deployment",
       "type": "string"
     },
-    "file_types": {
+    "fileTypes": {
       "description": "A list of keys to define extra files to download during provisioning",
       "items": {
         "type": "string"

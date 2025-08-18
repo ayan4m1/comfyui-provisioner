@@ -182,14 +182,14 @@ const getScriptUrl = async (template: Template, modules: Module[]) => {
 
     let script = await readFile(scriptPath, 'utf-8');
 
-    if (template.file_types.length && modules.length) {
+    if (template.fileTypes.length && modules.length) {
       // add all module deps together and then deduplicate
       const sumModule: ModuleDependencies = Object.fromEntries(
-        template.file_types.map((val) => [val, []])
+        template.fileTypes.map((val) => [val, []])
       );
 
       for (const module of modules) {
-        for (const key of template.file_types) {
+        for (const key of template.fileTypes) {
           sumModule[key] = uniq([
             ...sumModule[key],
             ...(module.files[key] ?? [])
@@ -197,7 +197,7 @@ const getScriptUrl = async (template: Template, modules: Module[]) => {
         }
       }
 
-      for (const key of template.file_types) {
+      for (const key of template.fileTypes) {
         if (!sumModule[key].length) {
           continue;
         }
