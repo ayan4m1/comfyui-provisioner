@@ -39,6 +39,12 @@ const formatBashArray = (items: string[]) =>
 export const getPackageInfo = async (): Promise<PackageJson> =>
   (await packageJsonModule.load(getPackageJsonPath()))?.content;
 
+const getUrlSize = async (url: string): Promise<number> => {
+  const res = await fetch(url);
+
+  return parseInt(res.headers.get('Content-Length') ?? '0', 10);
+};
+
 const parseJsonInDir = async <T>(basePath: string): Promise<Map<string, T>> => {
   const result = new Map<string, T>();
 
@@ -285,10 +291,53 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
       loop: false
     });
     const chosen = offers.find((offer) => offer.id === choice);
-    const hourlyDiskCost = chosen.search.diskHour * (templateInfo.size / 1e10); // convert to GB/hr
+
+    const moduleSizes = new Map<string, number>();
+    let diskSizeBytes = templateInfo.size;
+
+    if (modules.length) {
+      console.log('Fetching file sizes for extra resources...');
+
+      for (const module of modules) {
+        for (const [, urls] of Object.entries(module.files)) {
+          for (const url of urls) {
+            if (!moduleSizes.has(module.name)) {
+              moduleSizes.set(module.name, 0);
+            }
+
+            moduleSizes.set(
+              module.name,
+              moduleSizes.get(module.name) + (await getUrlSize(url))
+            );
+          }
+        }
+
+        diskSizeBytes += moduleSizes.get(module.name);
+      }
+    }
+
+    // round up to nearest gigabyte
+    diskSizeBytes /= 1e9;
+    diskSizeBytes = Math.ceil(diskSizeBytes);
+    diskSizeBytes *= 1e9;
+
+    const hourlyDiskCost = chosen.search.diskHour * (diskSizeBytes / 1e10); // convert to GB/hr
     const hourlyCost = `$${(chosen.search.gpuCostPerHour + hourlyDiskCost).toFixed(3)}/hr`;
     const storageCost = `$${hourlyDiskCost.toFixed(3)}/hr`;
-    const confirmMessage = `Are you SURE you want create the instance?\n\nIt will be automatically destroyed in ${formatDistanceToNow(fromUnixTime(chosen.end_date))}.\n\nYou will be charged ${hourlyCost} while it is running and ${storageCost} while it is stopped!\n\nIt is YOUR responsibility to make sure that it has been stopped or destroyed correctly.\n`;
+    const confirmMessage = `
+Template: ${templateInfo.name}
+Modules:
+${modules.map((module) => `  * ${module.name} (${filesize(moduleSizes.get(module.name))})`).join('\n')}
+Disk Size: ${filesize(diskSizeBytes)}
+
+Are you SURE you want create the instance?
+
+It will be automatically destroyed in ${formatDistanceToNow(fromUnixTime(chosen.end_date))}.
+
+You will be charged ${hourlyCost} while it is running and ${storageCost} while it is stopped!
+
+It is YOUR responsibility to make sure that it has been stopped or destroyed correctly!
+`;
 
     const confirmed = await confirm({
       message: confirmMessage,
@@ -315,7 +364,7 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
     const request: Record<string, unknown> = {
       extra_env: environmentVars,
       runtype: templateInfo.runType ?? RunType.Jupyter,
-      disk: templateInfo.size / 1e9, // convert to GB
+      disk: diskSizeBytes / 1e9, // convert to GB
       target_state: 'running',
       cancel_unavail: true,
       vm: false
