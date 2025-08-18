@@ -32,6 +32,8 @@ export type Module = {
   files: ModuleDependencies;
   name: string;
   template: string;
+  fileSizes: Map<string, number>;
+  totalSize: number;
 };
 
 export type Template = {

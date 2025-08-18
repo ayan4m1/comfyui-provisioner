@@ -104,21 +104,41 @@ const chooseTemplate = async (options: ProvisionOptions) => {
 const chooseModules = async (template: Template) => {
   try {
     const baseModulePath = join(getPackageJsonPath(), 'modules');
-    const moduleMap = await parseJsonInDir<Module>(baseModulePath);
-    const moduleChoices = Array.from(
-      moduleMap.entries().flatMap(([, module]) => {
-        if (module.template !== template.name) {
-          return [];
-        }
 
-        return [
-          {
-            name: module.name,
-            value: module
+    console.log('Reading module JSON from ./modules');
+
+    const moduleMap = await parseJsonInDir<Module>(baseModulePath);
+
+    console.log('Fetching file sizes...');
+
+    const moduleChoices = Array.from(
+      await Promise.all(
+        moduleMap.entries().map(async ([, module]) => {
+          if (module.template !== template.name) {
+            return [];
           }
-        ];
-      })
-    );
+
+          module.fileSizes = new Map<string, number>();
+          module.totalSize = 0;
+
+          for (const [, urls] of Object.entries(module.files)) {
+            for (const url of urls) {
+              const size = await getUrlSize(url);
+
+              module.fileSizes.set(url, size);
+              module.totalSize += size;
+            }
+          }
+
+          return [
+            {
+              name: `${module.name} (${filesize(module.totalSize)})`,
+              value: module
+            }
+          ];
+        })
+      )
+    ).flat();
 
     if (!moduleChoices.length) {
       return [];
@@ -292,27 +312,20 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
     });
     const chosen = offers.find((offer) => offer.id === choice);
 
-    const moduleSizes = new Map<string, number>();
+    // const moduleSizes = new Map<string, number>();
     let diskSizeBytes = templateInfo.size;
 
     if (modules.length) {
-      console.log('Fetching file sizes for extra resources...');
+      const seenUrls: string[] = [];
 
+      // do not count any URL more than once, sum up total added size
       for (const module of modules) {
-        for (const [, urls] of Object.entries(module.files)) {
-          for (const url of urls) {
-            if (!moduleSizes.has(module.name)) {
-              moduleSizes.set(module.name, 0);
-            }
-
-            moduleSizes.set(
-              module.name,
-              moduleSizes.get(module.name) + (await getUrlSize(url))
-            );
+        for (const [url, size] of module.fileSizes.entries()) {
+          if (!seenUrls.includes(url)) {
+            seenUrls.push(url);
+            diskSizeBytes += size;
           }
         }
-
-        diskSizeBytes += moduleSizes.get(module.name);
       }
     }
 
@@ -327,7 +340,7 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
     const confirmMessage = `
 Template: ${templateInfo.name}
 Modules:
-${modules.map((module) => `  * ${module.name} (${filesize(moduleSizes.get(module.name))})`).join('\n')}
+${modules.map((module) => `  * ${module.name} (${filesize(module.totalSize)})`).join('\n')}
 Disk Size: ${filesize(diskSizeBytes)}
 
 Are you SURE you want create the instance?
