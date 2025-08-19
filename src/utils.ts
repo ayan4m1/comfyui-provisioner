@@ -294,7 +294,7 @@ const formatOffers = (options: ProvisionOptions, offers: Offer[]) => {
           `${Math.floor(offer.inet_down)} Mbps`,
           chalk.bgHex(costHex)(`$${offer.search.totalHour.toFixed(3)}/hr`)
         ),
-        value: offer.id
+        value: offer
       };
     });
 };
@@ -305,14 +305,12 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
     const modules = await chooseModules(templateInfo);
     const offers = await getOffers(options);
 
-    const choice = await select<number>({
+    const choice = await select<Offer>({
       message: 'Choose the instance you would like to request.',
       choices: formatOffers(options, offers),
       loop: false
     });
-    const chosen = offers.find((offer) => offer.id === choice);
 
-    // const moduleSizes = new Map<string, number>();
     let diskSizeBytes = templateInfo.size;
 
     if (modules.length) {
@@ -334,8 +332,8 @@ export const provision = async (options: ProvisionOptions): Promise<void> => {
     diskSizeBytes = Math.ceil(diskSizeBytes);
     diskSizeBytes *= 1e9;
 
-    const hourlyDiskCost = chosen.search.diskHour * (diskSizeBytes / 1e10); // convert to GB/hr
-    const hourlyCost = `$${(chosen.search.gpuCostPerHour + hourlyDiskCost).toFixed(3)}/hr`;
+    const hourlyDiskCost = choice.search.diskHour * (diskSizeBytes / 1e10); // convert to GB/hr
+    const hourlyCost = `$${(choice.search.gpuCostPerHour + hourlyDiskCost).toFixed(3)}/hr`;
     const storageCost = `$${hourlyDiskCost.toFixed(3)}/hr`;
     const confirmMessage = `
 Template: ${templateInfo.name}
@@ -345,7 +343,7 @@ Disk Size: ${filesize(diskSizeBytes)}
 
 Are you SURE you want create the instance?
 
-It will be automatically destroyed in ${formatDistanceToNow(fromUnixTime(chosen.end_date))}.
+It will be automatically destroyed in ${formatDistanceToNow(fromUnixTime(choice.end_date))}.
 
 You will be charged ${hourlyCost} while it is running and ${storageCost} while it is stopped!
 
@@ -389,7 +387,7 @@ It is YOUR responsibility to make sure that it has been stopped or destroyed cor
       request.image = templateInfo.tag;
     }
 
-    const deployResponse = await fetch(`${baseApiUrl}/asks/${chosen.id}`, {
+    const deployResponse = await fetch(`${baseApiUrl}/asks/${choice.id}`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${process.env.VAST_API_KEY}`,
