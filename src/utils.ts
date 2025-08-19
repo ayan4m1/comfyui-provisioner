@@ -16,7 +16,6 @@ import {
   Offer,
   Offers,
   ProvisionOptions,
-  RunType,
   Template,
   ModuleDependencies
 } from './types.js';
@@ -374,7 +373,6 @@ It is YOUR responsibility to make sure that it has been stopped or destroyed cor
 
     const request: Record<string, unknown> = {
       extra_env: environmentVars,
-      runtype: templateInfo.runType ?? RunType.Jupyter,
       disk: diskSizeBytes / 1e9, // convert to GB
       target_state: 'running',
       cancel_unavail: true,
@@ -385,6 +383,7 @@ It is YOUR responsibility to make sure that it has been stopped or destroyed cor
       request.template_hash_id = templateInfo.hash;
     } else if (templateInfo.tag) {
       request.image = templateInfo.tag;
+      request.runtype = templateInfo.runType;
     }
 
     const deployResponse = await fetch(`${baseApiUrl}/asks/${choice.id}`, {
