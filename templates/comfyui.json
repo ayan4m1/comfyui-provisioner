@@ -12,7 +12,7 @@
   "name": "ComfyUI",
   "runType": "jupyter",
   "script": "comfyui.sh",
-  "size": 20e9,
+  "size": 8e9,
   "tag": "vastai/comfy:cuda-12.8-auto",
   "fileTypes": [
     "apt_packages",
