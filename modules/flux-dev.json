@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/module.schema.json",
+  "$schema": "https://raw.githubusercontent.com/ayan4m1/vast-ai-provisioner/main/module.schema.json",
   "name": "Flux 1.D",
   "template": "ComfyUI",
   "files": {
@@ -19,7 +19,7 @@
       "https://huggingface.co/ffxvs/vae-flux/resolve/main/ae.safetensors"
     ],
     "workflows": [
-      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/flux-txt2img.json"
+      "https://raw.githubusercontent.com/ayan4m1/vast-ai-provisioner/main/workflows/flux-txt2img.json"
     ]
   }
 }

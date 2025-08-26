@@ -16,7 +16,7 @@ NODES=(
 )
 
 WORKFLOWS=(
-    "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/flux-kontext.json"
+    "https://raw.githubusercontent.com/ayan4m1/vast-ai-provisioner/main/workflows/flux-kontext.json"
 )
 
 CLIP_MODELS=(

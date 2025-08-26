@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/module.schema.json",
+  "$schema": "https://raw.githubusercontent.com/ayan4m1/vast-ai-provisioner/main/module.schema.json",
   "name": "Popular Upscalers",
   "template": "ComfyUI",
   "files": {
@@ -11,8 +11,8 @@
       "https://drive.usercontent.google.com/download?id=19Kn6-avBPXhEjp9Hj2OkMzozo7T9C-6j&export=download&authuser=0&confirm=t&uuid=4ae5a096-cbf8-4db0-8a76-f20313ac67eb&at=AN8xHop2wzdHQMGBO9N3W_S9bNX8:1754245171054"
     ],
     "workflows": [
-      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/remove-bg.json",
-      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/upscaler.json"
+      "https://raw.githubusercontent.com/ayan4m1/vast-ai-provisioner/main/workflows/remove-bg.json",
+      "https://raw.githubusercontent.com/ayan4m1/vast-ai-provisioner/main/workflows/upscaler.json"
     ]
   }
 }

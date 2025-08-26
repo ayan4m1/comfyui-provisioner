@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/module.schema.json",
+  "$schema": "https://raw.githubusercontent.com/ayan4m1/vast-ai-provisioner/main/module.schema.json",
   "name": "Animagine XL 4.0",
   "template": "ComfyUI",
   "files": {
@@ -7,7 +7,7 @@
       "https://huggingface.co/cagliostrolab/animagine-xl-4.0/resolve/main/animagine-xl-4.0.safetensors"
     ],
     "workflows": [
-      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/animagine-4.json"
+      "https://raw.githubusercontent.com/ayan4m1/vast-ai-provisioner/main/workflows/animagine-4.json"
     ]
   }
 }

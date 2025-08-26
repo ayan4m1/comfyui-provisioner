@@ -2477,9 +2477,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"comfyui-provisioner@workspace:.":
+"vast-ai-provisioner@workspace:.":
   version: 0.0.0-use.local
-  resolution: "comfyui-provisioner@workspace:."
+  resolution: "vast-ai-provisioner@workspace:."
   dependencies:
     "@commander-js/extra-typings": "npm:^14.0.0"
     "@commitlint/config-conventional": "npm:^19.8.1"

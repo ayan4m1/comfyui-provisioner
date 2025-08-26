@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/module.schema.json",
+  "$schema": "https://raw.githubusercontent.com/ayan4m1/vast-ai-provisioner/main/module.schema.json",
   "name": "Pixel Art Resources",
   "template": "ComfyUI",
   "files": {

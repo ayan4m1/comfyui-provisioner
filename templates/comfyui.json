@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/template.schema.json",
+  "$schema": "https://raw.githubusercontent.com/ayan4m1/vast-ai-provisioner/main/template.schema.json",
   "description": "A node-based AI image generator",
   "environment": {
     "OPEN_BUTTON_PORT": "1111",

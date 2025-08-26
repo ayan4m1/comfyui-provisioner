@@ -1,11 +1,11 @@
 {
-  "$schema": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/module.schema.json",
+  "$schema": "https://raw.githubusercontent.com/ayan4m1/vast-ai-provisioner/main/module.schema.json",
   "name": "WAN2.2",
   "template": "ComfyUI",
   "files": {
     "nodes": ["https://github.com/city96/ComfyUI-GGUF"],
     "workflows": [
-      "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/wan2.2-img2vid.json"
+      "https://raw.githubusercontent.com/ayan4m1/vast-ai-provisioner/main/workflows/wan2.2-img2vid.json"
     ],
     "vae_models": [
       "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan2.2_vae.safetensors"

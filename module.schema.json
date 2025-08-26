@@ -1,5 +1,5 @@
 {
-  "$id": "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/module.schema.json",
+  "$id": "https://raw.githubusercontent.com/ayan4m1/vast-ai-provisioner/main/module.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Module",
   "type": "object",

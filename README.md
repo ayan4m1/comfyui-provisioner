@@ -1,4 +1,4 @@
-# comfyui-provisioner
+# vast-ai-provisioner
 
 This script will provision a [Vast.ai](https://vast.ai) instance with a specific template which can be overridden and customized beyond what is available with Vast's template system. The repo currently provides the following templates:
 

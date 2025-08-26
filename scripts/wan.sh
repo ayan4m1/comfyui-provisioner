@@ -21,7 +21,7 @@ NODES=(
 )
 
 WORKFLOWS=(
-    "https://raw.githubusercontent.com/ayan4m1/comfyui-provisioner/main/workflows/wan2.2-img2vid.json"
+    "https://raw.githubusercontent.com/ayan4m1/vast-ai-provisioner/main/workflows/wan2.2-img2vid.json"
 )
 
 CLIP_MODELS=()

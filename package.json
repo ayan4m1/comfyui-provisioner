@@ -2,7 +2,7 @@
   "author": "ayan4m1 <andrew@bulletlogic.com>",
   "bin": "lib/index.js",
   "bugs": {
-    "url": "https://github.com/ayan4m1/comfyui-provisioner/issues"
+    "url": "https://github.com/ayan4m1/vast-ai-provisioner/issues"
   },
   "config": {
     "commitizen": {
@@ -60,15 +60,15 @@
   "files": [
     "lib/"
   ],
-  "homepage": "https://github.com/ayan4m1/comfyui-provisioner#readme",
+  "homepage": "https://github.com/ayan4m1/vast-ai-provisioner#readme",
   "license": "MIT",
   "main": "n/a",
   "module": "lib/index.js",
-  "name": "comfyui-provisioner",
+  "name": "vast-ai-provisioner",
   "packageManager": "yarn@4.9.2",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ayan4m1/comfyui-provisioner.git"
+    "url": "git+https://github.com/ayan4m1/vast-ai-provisioner.git"
   },
   "scripts": {
     "build": "rollup -c --configPlugin typescript",
