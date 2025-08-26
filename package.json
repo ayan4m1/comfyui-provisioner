@@ -58,7 +58,10 @@
     "node": ">=22"
   },
   "files": [
-    "lib/"
+    "lib/",
+    "modules/",
+    "templates/",
+    "scripts/"
   ],
   "homepage": "https://github.com/ayan4m1/vast-ai-provisioner#readme",
   "license": "MIT",
