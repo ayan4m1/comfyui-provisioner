@@ -1,0 +1,20 @@
+name: Publish releases to NPM
+on:
+  push:
+    branches: ['main']
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+      - run: yarn install --immutable
+      - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
