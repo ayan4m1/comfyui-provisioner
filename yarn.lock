@@ -2477,53 +2477,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vast-ai-provisioner@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "vast-ai-provisioner@workspace:."
-  dependencies:
-    "@commander-js/extra-typings": "npm:^14.0.0"
-    "@commitlint/config-conventional": "npm:^19.8.1"
-    "@commitlint/cz-commitlint": "npm:^19.8.1"
-    "@eslint/js": "npm:^9.30.1"
-    "@inquirer/core": "npm:^10.1.14"
-    "@inquirer/prompts": "npm:^7.6.0"
-    "@npmcli/package-json": "npm:^6.2.0"
-    "@rollup/plugin-terser": "npm:^0.4.4"
-    "@rollup/plugin-typescript": "npm:^12.1.4"
-    "@types/d3-interpolate": "npm:^3"
-    "@types/eslint__js": "npm:^8.42.3"
-    "@types/lodash.uniq": "npm:^4"
-    "@types/node": "npm:24.0.10"
-    "@types/npmcli__package-json": "npm:^4.0.4"
-    "@types/sprintf-js": "npm:^1"
-    chalk: "npm:^5.4.1"
-    commander: "npm:^14.0.0"
-    commitizen: "npm:^4.3.1"
-    commitlint: "npm:^19.8.1"
-    d3-interpolate: "npm:^3.0.1"
-    date-fns: "npm:^4.1.0"
-    dotenv: "npm:^17.2.0"
-    eslint: "npm:^9.30.1"
-    eslint-config-prettier: "npm:^10.1.5"
-    eslint-import-resolver-typescript: "npm:^4.4.4"
-    eslint-plugin-import-x: "npm:^4.16.1"
-    eslint-plugin-prettier: "npm:^5.5.1"
-    filesize: "npm:^11.0.0"
-    husky: "npm:^9.1.7"
-    inquirer: "npm:9"
-    lint-staged: "npm:^16.1.2"
-    lodash.uniq: "npm:^4.5.0"
-    prettier: "npm:^3.6.2"
-    rollup: "npm:^4.44.2"
-    rollup-plugin-auto-external: "npm:^2.0.0"
-    semantic-release: "npm:^24.2.7"
-    sprintf-js: "npm:^1.1.3"
-    tslib: "npm:^2.8.1"
-    typescript: "npm:^5.8.3"
-    typescript-eslint: "npm:^8.35.1"
-  languageName: unknown
-  linkType: soft
-
 "commander@npm:^14.0.0":
   version: 14.0.0
   resolution: "commander@npm:14.0.0"
@@ -7527,6 +7480,55 @@ __metadata:
   checksum: 10c0/c4c23a8b9fa8deee11eea421d94fbe39f742146c06571b62247212579298186b724ebc5152240a415753bdaf9b8849a487e675ec2968d44660f8a65de6cdef9e
   languageName: node
   linkType: hard
+
+"vast-ai-provisioner@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "vast-ai-provisioner@workspace:."
+  dependencies:
+    "@commander-js/extra-typings": "npm:^14.0.0"
+    "@commitlint/config-conventional": "npm:^19.8.1"
+    "@commitlint/cz-commitlint": "npm:^19.8.1"
+    "@eslint/js": "npm:^9.30.1"
+    "@inquirer/core": "npm:^10.1.14"
+    "@inquirer/prompts": "npm:^7.6.0"
+    "@npmcli/package-json": "npm:^6.2.0"
+    "@rollup/plugin-terser": "npm:^0.4.4"
+    "@rollup/plugin-typescript": "npm:^12.1.4"
+    "@types/d3-interpolate": "npm:^3"
+    "@types/eslint__js": "npm:^8.42.3"
+    "@types/lodash.uniq": "npm:^4"
+    "@types/node": "npm:24.0.10"
+    "@types/npmcli__package-json": "npm:^4.0.4"
+    "@types/sprintf-js": "npm:^1"
+    chalk: "npm:^5.4.1"
+    commander: "npm:^14.0.0"
+    commitizen: "npm:^4.3.1"
+    commitlint: "npm:^19.8.1"
+    d3-interpolate: "npm:^3.0.1"
+    date-fns: "npm:^4.1.0"
+    dotenv: "npm:^17.2.0"
+    eslint: "npm:^9.30.1"
+    eslint-config-prettier: "npm:^10.1.5"
+    eslint-import-resolver-typescript: "npm:^4.4.4"
+    eslint-plugin-import-x: "npm:^4.16.1"
+    eslint-plugin-prettier: "npm:^5.5.1"
+    filesize: "npm:^11.0.0"
+    husky: "npm:^9.1.7"
+    inquirer: "npm:9"
+    lint-staged: "npm:^16.1.2"
+    lodash.uniq: "npm:^4.5.0"
+    prettier: "npm:^3.6.2"
+    rollup: "npm:^4.44.2"
+    rollup-plugin-auto-external: "npm:^2.0.0"
+    semantic-release: "npm:^24.2.7"
+    sprintf-js: "npm:^1.1.3"
+    tslib: "npm:^2.8.1"
+    typescript: "npm:^5.8.3"
+    typescript-eslint: "npm:^8.35.1"
+  bin:
+    vast-ai-provisioner: lib/index.js
+  languageName: unknown
+  linkType: soft
 
 "walk-up-path@npm:^3.0.1":
   version: 3.0.1

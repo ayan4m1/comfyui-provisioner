@@ -65,7 +65,7 @@
   "main": "n/a",
   "module": "lib/index.js",
   "name": "vast-ai-provisioner",
-  "packageManager": "yarn@4.9.2",
+  "packageManager": "yarn@4.9.4",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ayan4m1/vast-ai-provisioner.git"
