@@ -7,11 +7,22 @@ This script will provision a [Vast.ai](https://vast.ai) instance with a specific
 - Flux Kontext ComfyUI install - Just Flux Kontext
 - [FP-Studio](https://github.com/FP-Studio/FramePack-Studio) - A FramePack-based video editor
 
-# Requirements
+## Requirements
 
 - Node >=22
 
-# Usage
+## Usage
+
+```sh
+npm install -g vast-ai-provisioner
+vast-ai-provisioner -h
+
+OR
+
+npx vast-ai-provisioner -h
+```
+
+## Development
 
 ```sh
 corepack enable
