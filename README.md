@@ -2,10 +2,19 @@
 
 This script will provision a [Vast.ai](https://vast.ai) instance with a specific template which can be overridden and customized beyond what is available with Vast's template system. The repo currently provides the following templates:
 
-- "Complete" ComfyUI install - Flux, WAN, Hunyuan, SDXL + variants, ControlNets, and LoRAs
-- SDXL ComfyUI install - all of the above minus Flux, WAN, and Hunyuan
-- Flux Kontext ComfyUI install - Just Flux Kontext
+- [ComfyUI](https://github.com/comfyanonymous/ComfyUI) - A node-based AI image/video generation suite
 - [FP-Studio](https://github.com/FP-Studio/FramePack-Studio) - A FramePack-based video editor
+
+Additionally, there are several modules available to add to the base ComfyUI install:
+
+- Animagine: Animagine XL 4.0, a best-in-class anime model
+- Flux Dev: Adds Flux 1.Dev and ControlNet
+- Flux Kontext: Adds Flux Kontext for image editing
+- Pixel Art: Adds Pixel Art LoRAs for SDXL
+- SDXL: Adds SDXL and ControlNet
+- Upscalers: A collection of high quality 2x and 4x upscalers
+- Utility Nodes: A set of Comfy nodes to make building workflows easier
+- WAN2.2: A powerful text-to-video or image-to-video model
 
 ## Requirements
 
